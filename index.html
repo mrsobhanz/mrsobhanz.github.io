@@ -262,12 +262,23 @@ nav {
   flex-shrink: 0;
 }
 .logo-svg { width: 30px; height: 30px; overflow: visible; flex-shrink: 0; }
-.logo-ring { animation: spin 22s linear infinite; transform-origin: 15px 15px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.logo-wordmark {
-  font-family: var(--f-mono); font-size: 12px; font-weight: 500;
-  color: var(--ink-2); letter-spacing: .05em;
-  opacity: 0; animation: fadeDown var(--med) var(--ease) .05s forwards;
+/* Update these rules around line 185 */
+
+.logo-ring { 
+  transform-origin: 16px 16px; /* Updated to match new 32x32 viewbox */
+  animation: slowGear 20s linear infinite; 
+}
+
+/* New Animation for a smoother mechanical feel */
+@keyframes slowGear { 
+  from { transform: rotate(0deg); } 
+  to { transform: rotate(360deg); } 
+}
+
+/* The "Rev" effect: when you hover the logo area, the gear speeds up */
+.nav-logo:hover .logo-ring {
+  animation-duration: 3s; 
+  transition: animation-duration 0.8s var(--ease-out);
 }
 .logo-wordmark em { font-style: normal; color: var(--orange); }
 
@@ -864,23 +875,28 @@ footer {
 <!-- ─── Navigation ────────────────────────────────── -->
 <nav>
   <a href="#hero" class="nav-logo">
-    <svg class="logo-svg" viewBox="0 0 30 30" fill="none">
-      <g class="logo-ring">
-        <polygon points="15,1.5 26,8 26,22 15,28.5 4,22 4,8"
-          stroke="#e87820" stroke-width="1" fill="none" opacity=".72"/>
-        <circle cx="15" cy="1.5"  r="1.25" fill="#e87820"/>
-        <circle cx="26" cy="8"    r="1.25" fill="#c95f2a" opacity=".8"/>
-        <circle cx="26" cy="22"   r="1.25" fill="#9b7fff" opacity=".7"/>
-        <circle cx="15" cy="28.5" r="1.25" fill="#e87820"/>
-        <circle cx="4"  cy="22"   r="1.25" fill="#c95f2a" opacity=".8"/>
-        <circle cx="4"  cy="8"    r="1.25" fill="#9b7fff" opacity=".7"/>
-      </g>
-      <text x="15" y="19" text-anchor="middle"
-        font-family="DM Mono,monospace" font-size="9" font-weight="500"
-        fill="#f0ebe4" letter-spacing="-.3">SZ</text>
-    </svg>
-    <span class="logo-wordmark">sobhan<em> </em>zare</span>
-  </a>
+  <svg class="logo-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:var(--orange); stop-opacity:1" />
+        <stop offset="100%" style="stop-color:var(--rust); stop-opacity:1" />
+      </linearGradient>
+    </defs>
+    <g class="logo-ring">
+      <path d="M16 2L29.8564 10V22L16 30L2.14359 22V10L16 2Z" stroke="url(#logo-grad)" stroke-width="1.2" fill="none" opacity="0.8"/>
+      <circle cx="16" cy="2" r="1.5" fill="var(--orange)" />
+      <circle cx="29.8564" cy="10" r="1.2" fill="var(--orange)" opacity="0.6" />
+      <circle cx="29.8564" cy="22" r="1.2" fill="var(--violet)" opacity="0.5" />
+      <circle cx="16" cy="30" r="1.5" fill="var(--orange)" />
+      <circle cx="2.14359" cy="22" r="1.2" fill="var(--orange)" opacity="0.6" />
+      <circle cx="2.14359" cy="10" r="1.2" fill="var(--violet)" opacity="0.5" />
+    </g>
+    <text x="16" y="20.5" text-anchor="middle" font-family="var(--f-mono)" font-size="8.5" font-weight="600" fill="var(--ink)" style="letter-spacing: -0.5px;">SZ</text>
+    <line x1="16" y1="2" x2="16" y2="10" stroke="var(--orange)" stroke-width="0.5" opacity="0.3" />
+    <line x1="16" y1="22" x2="16" y2="30" stroke="var(--orange)" stroke-width="0.5" opacity="0.3" />
+  </svg>
+  <span class="logo-wordmark">sobhan<em> </em>zare</span>
+   </a>
 
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
