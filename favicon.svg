@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .bg   { fill: #0c0b0a; }
+    .ring { stroke: #e87820; }
+    .dot1 { fill: #e87820; }
+    .dot2 { fill: #c95f2a; }
+    .dot3 { fill: #9b7fff; }
+    .text { fill: #f0ebe4; }
+    @media (prefers-color-scheme: light) {
+      .bg   { fill: #faf6f0; }
+      .ring { stroke: #c06010; }
+      .dot1 { fill: #c06010; }
+      .dot2 { fill: #a03010; }
+      .dot3 { fill: #5a40c8; }
+      .text { fill: #18130e; }
+    }
+  </style>
+  <!-- Background -->
+  <rect width="32" height="32" rx="7" class="bg"/>
+  <!-- Hex ring -->
+  <polygon
+    points="16,2.5 27,8.8 27,21.2 16,27.5 5,21.2 5,8.8"
+    fill="none" class="ring" stroke-width="1.2" opacity=".75"/>
+  <!-- Vertex dots -->
+  <circle cx="16"  cy="2.5"  r="1.4" class="dot1"/>
+  <circle cx="27"  cy="8.8"  r="1.4" class="dot2" opacity=".85"/>
+  <circle cx="27"  cy="21.2" r="1.4" class="dot3" opacity=".75"/>
+  <circle cx="16"  cy="27.5" r="1.4" class="dot1"/>
+  <circle cx="5"   cy="21.2" r="1.4" class="dot2" opacity=".85"/>
+  <circle cx="5"   cy="8.8"  r="1.4" class="dot3" opacity=".75"/>
+  <!-- SZ monogram -->
+  <text
+    x="16" y="20.5"
+    text-anchor="middle"
+    font-family="ui-monospace, 'DM Mono', 'Courier New', monospace"
+    font-size="10.5"
+    font-weight="600"
+    letter-spacing="-0.5"
+    class="text">SZ</text>
+</svg>
