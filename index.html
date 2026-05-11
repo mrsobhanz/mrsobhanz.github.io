@@ -133,11 +133,6 @@ body {
 
 /* ══════════════════════════════════════════
    ENGINEERING RETICLE CURSOR
-   Precision targeting crosshair with a
-   continuously-spinning outer ring,
-   corner brackets, and tick marks.
-   Snaps precisely to the pointer; only
-   the outer ring lags slightly for feel.
 ══════════════════════════════════════════ */
 #reticle {
   position: fixed; top: 0; left: 0;
@@ -166,10 +161,7 @@ body.hov #reticle { width: 54px; height: 54px; margin-left: -27px; margin-top: -
 [data-theme="light"] #circuit-canvas { opacity: .35; }
 
 /* ══════════════════════════════════════════
-   LIVE TELEMETRY PILLS (bottom-right)
-   Two tiny floating pills. Fade to near-
-   invisible while the mouse is moving so
-   they never obscure page content.
+   LIVE TELEMETRY PILLS
 ══════════════════════════════════════════ */
 #status-hud {
   position: fixed; bottom: var(--s5); right: var(--s5);
@@ -178,7 +170,6 @@ body.hov #reticle { width: 54px; height: 54px; margin-left: -27px; margin-top: -
   align-items: flex-end; gap: 5px;
   opacity: 0;
   animation: fadeUp var(--slow) var(--ease-out) 2.2s forwards;
-  /* fade-on-move handled by JS adding .moving class */
   transition: opacity .6s var(--ease);
 }
 #status-hud.moving { opacity: .12 !important; }
@@ -214,7 +205,7 @@ body.hov #reticle { width: 54px; height: 54px; margin-left: -27px; margin-top: -
 }
 
 /* ══════════════════════════════════════════
-   ANNOTATIONS (peek in from right edge)
+   ANNOTATIONS
 ══════════════════════════════════════════ */
 .ann {
   position: fixed; right: 0;
@@ -261,24 +252,23 @@ nav {
   display: flex; align-items: center; gap: var(--s2);
   flex-shrink: 0;
 }
-.logo-svg { width: 30px; height: 30px; overflow: visible; flex-shrink: 0; }
-/* Update these rules around line 185 */
-
+.logo-svg { width: 32px; height: 32px; overflow: visible; flex-shrink: 0; }
 .logo-ring { 
-  transform-origin: 16px 16px; /* Updated to match new 32x32 viewbox */
+  transform-origin: 16px 16px; 
   animation: slowGear 20s linear infinite; 
 }
-
-/* New Animation for a smoother mechanical feel */
 @keyframes slowGear { 
   from { transform: rotate(0deg); } 
   to { transform: rotate(360deg); } 
 }
-
-/* The "Rev" effect: when you hover the logo area, the gear speeds up */
 .nav-logo:hover .logo-ring {
   animation-duration: 3s; 
   transition: animation-duration 0.8s var(--ease-out);
+}
+.logo-wordmark {
+  font-family: var(--f-mono); font-size: 12px; font-weight: 500;
+  color: var(--ink-2); letter-spacing: .05em;
+  opacity: 0; animation: fadeDown var(--med) var(--ease) .05s forwards;
 }
 .logo-wordmark em { font-style: normal; color: var(--orange); }
 
@@ -818,31 +808,24 @@ footer {
 </head>
 <body>
 
-<!-- ─── Engineering reticle cursor ─────────────────── -->
 <div id="reticle" aria-hidden="true">
   <svg viewBox="-26 -26 52 52" xmlns="http://www.w3.org/2000/svg">
-    <!-- Outer ring + tick marks (spun by JS via CSS custom property) -->
     <g id="ret-spin">
       <circle cx="0" cy="0" r="16" fill="none" stroke="#e87820" stroke-width="1" opacity=".65"/>
-      <!-- Cardinal ticks (longer) -->
       <line x1="16" y1="0"  x2="19.5" y2="0"  stroke="#e87820" stroke-width="1" opacity=".65"/>
       <line x1="-16" y1="0" x2="-19.5" y2="0" stroke="#e87820" stroke-width="1" opacity=".65"/>
       <line x1="0" y1="16"  x2="0" y2="19.5"  stroke="#e87820" stroke-width="1" opacity=".65"/>
       <line x1="0" y1="-16" x2="0" y2="-19.5" stroke="#e87820" stroke-width="1" opacity=".65"/>
-      <!-- Diagonal ticks (shorter, dimmer) -->
       <line x1="11.3" y1="11.3"   x2="13"  y2="13"   stroke="#e87820" stroke-width=".8" opacity=".28"/>
       <line x1="-11.3" y1="11.3"  x2="-13" y2="13"   stroke="#e87820" stroke-width=".8" opacity=".28"/>
       <line x1="-11.3" y1="-11.3" x2="-13" y2="-13"  stroke="#e87820" stroke-width=".8" opacity=".28"/>
       <line x1="11.3" y1="-11.3"  x2="13"  y2="-13"  stroke="#e87820" stroke-width=".8" opacity=".28"/>
     </g>
-    <!-- Static crosshair arms (gap in centre) -->
     <line x1="-24" y1="0" x2="-5"  y2="0"  stroke="#e87820" stroke-width=".9" opacity=".6"/>
     <line x1="5"   y1="0" x2="24"  y2="0"  stroke="#e87820" stroke-width=".9" opacity=".6"/>
     <line x1="0" y1="-24" x2="0" y2="-5"   stroke="#e87820" stroke-width=".9" opacity=".6"/>
     <line x1="0" y1="5"   x2="0" y2="24"   stroke="#e87820" stroke-width=".9" opacity=".6"/>
-    <!-- Centre dot -->
     <circle id="ret-dot" cx="0" cy="0" r="1.8" fill="#e87820"/>
-    <!-- Corner engineering brackets -->
     <path d="M-23,-11 L-23,-23 L-11,-23" stroke="#e87820" stroke-width=".7" fill="none" opacity=".35"/>
     <path d="M11,-23  L23,-23  L23,-11"  stroke="#e87820" stroke-width=".7" fill="none" opacity=".35"/>
     <path d="M23,11   L23,23   L11,23"   stroke="#e87820" stroke-width=".7" fill="none" opacity=".35"/>
@@ -850,16 +833,13 @@ footer {
   </svg>
 </div>
 
-<!-- ─── Background canvas ──────────────────────────── -->
 <canvas id="circuit-canvas"></canvas>
 
-<!-- ─── Right-edge engineering annotations ────────── -->
 <span class="ann ann-1">PID_GAIN = 0.82</span>
 <span class="ann ann-2">motor.setPWM(duty)</span>
 <span class="ann ann-3">encoder.read()</span>
 <span class="ann ann-4">throttle = 0.74</span>
 
-<!-- ─── Telemetry pills ────────────────────────────── -->
 <div id="status-hud">
   <div class="hud-pill">
     <span class="hud-pill-key">RPM</span>
@@ -872,31 +852,30 @@ footer {
   </div>
 </div>
 
-<!-- ─── Navigation ────────────────────────────────── -->
 <nav>
   <a href="#hero" class="nav-logo">
-  <svg class="logo-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" style="stop-color:var(--orange); stop-opacity:1" />
-        <stop offset="100%" style="stop-color:var(--rust); stop-opacity:1" />
-      </linearGradient>
-    </defs>
-    <g class="logo-ring">
-      <path d="M16 2L29.8564 10V22L16 30L2.14359 22V10L16 2Z" stroke="url(#logo-grad)" stroke-width="1.2" fill="none" opacity="0.8"/>
-      <circle cx="16" cy="2" r="1.5" fill="var(--orange)" />
-      <circle cx="29.8564" cy="10" r="1.2" fill="var(--orange)" opacity="0.6" />
-      <circle cx="29.8564" cy="22" r="1.2" fill="var(--violet)" opacity="0.5" />
-      <circle cx="16" cy="30" r="1.5" fill="var(--orange)" />
-      <circle cx="2.14359" cy="22" r="1.2" fill="var(--orange)" opacity="0.6" />
-      <circle cx="2.14359" cy="10" r="1.2" fill="var(--violet)" opacity="0.5" />
-    </g>
-    <text x="16" y="20.5" text-anchor="middle" font-family="var(--f-mono)" font-size="8.5" font-weight="600" fill="var(--ink)" style="letter-spacing: -0.5px;">SZ</text>
-    <line x1="16" y1="2" x2="16" y2="10" stroke="var(--orange)" stroke-width="0.5" opacity="0.3" />
-    <line x1="16" y1="22" x2="16" y2="30" stroke="var(--orange)" stroke-width="0.5" opacity="0.3" />
-  </svg>
-  <span class="logo-wordmark">sobhan<em> </em>zare</span>
-   </a>
+    <svg class="logo-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:var(--orange); stop-opacity:1" />
+          <stop offset="100%" style="stop-color:var(--rust); stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <g class="logo-ring">
+        <path d="M16 2L29.8564 10V22L16 30L2.14359 22V10L16 2Z" stroke="url(#logo-grad)" stroke-width="1.2" fill="none" opacity="0.8"/>
+        <circle cx="16" cy="2" r="1.5" fill="var(--orange)" />
+        <circle cx="29.8564" cy="10" r="1.2" fill="var(--orange)" opacity="0.6" />
+        <circle cx="29.8564" cy="22" r="1.2" fill="var(--violet)" opacity="0.5" />
+        <circle cx="16" cy="30" r="1.5" fill="var(--orange)" />
+        <circle cx="2.14359" cy="22" r="1.2" fill="var(--orange)" opacity="0.6" />
+        <circle cx="2.14359" cy="10" r="1.2" fill="var(--violet)" opacity="0.5" />
+      </g>
+      <text x="16" y="20.5" text-anchor="middle" font-family="var(--f-mono)" font-size="8.5" font-weight="600" fill="var(--ink)" style="letter-spacing: -0.5px;">SZ</text>
+      <line x1="16" y1="2" x2="16" y2="10" stroke="var(--orange)" stroke-width="0.5" opacity="0.3" />
+      <line x1="16" y1="22" x2="16" y2="30" stroke="var(--orange)" stroke-width="0.5" opacity="0.3" />
+    </svg>
+    <span class="logo-wordmark">sobhan<em> </em>zare</span>
+  </a>
 
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
@@ -926,12 +905,8 @@ footer {
   </div>
 </nav>
 
-<!-- ════════════════════════════════════════
-     MAIN
-════════════════════════════════════════ -->
 <main>
 
-<!-- HERO -->
 <section id="hero">
   <div class="inner">
     <p class="hero-coord">43.4684° N · 80.5195° W</p>
@@ -962,7 +937,6 @@ footer {
 
 <hr class="rule">
 
-<!-- ABOUT -->
 <section id="about">
   <div class="inner">
     <div class="reveal">
@@ -985,14 +959,12 @@ footer {
   </div>
 </section>
 
-<!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-track" id="ticker-track"></div>
 </div>
 
 <hr class="rule">
 
-<!-- EXPERIENCE -->
 <section id="experience">
   <div class="inner">
     <div class="reveal">
@@ -1058,7 +1030,6 @@ footer {
 
 <hr class="rule">
 
-<!-- PROJECTS -->
 <section id="projects">
   <div class="inner">
     <div class="reveal">
@@ -1111,7 +1082,6 @@ footer {
 
 <hr class="rule">
 
-<!-- SKILLS -->
 <section id="skills">
   <div class="inner">
     <div class="reveal">
@@ -1162,7 +1132,6 @@ footer {
 
 <hr class="rule">
 
-<!-- CONTACT -->
 <section id="contact">
   <div class="inner">
     <div class="reveal">
@@ -1198,7 +1167,6 @@ footer {
   </div>
 </section>
 
-<!-- EASTER EGG -->
 <div id="easter-egg">
   <div class="inner">
     <div class="egg-prompt" id="egg-prompt">
