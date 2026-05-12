@@ -4,462 +4,1379 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Sobhan Zare — Building mechatronic systems.">
-<title>Sobhan's Portfolio</title>
+<title>Sobhan Zare</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 
 /* ══════════════════════════════════════════
-   RESET & TOKENS
+   RESET
 ══════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 img, canvas { display: block; }
 
+/* ══════════════════════════════════════════
+   TOKENS — intentionally minimal
+   TWO COLOURS: near-black bg + orange accent
+   Everything else is opacity of those two.
+══════════════════════════════════════════ */
 :root {
-  --t-xs:   0.694rem; --t-sm:   0.833rem; --t-base: 1rem;
-  --t-lg:   1.2rem;   --t-xl:   1.44rem;  --t-2xl:  1.728rem; --t-3xl:  2.074rem;
-  --s1: .25rem; --s2: .5rem;   --s3: .75rem; --s4: 1rem;
-  --s5: 1.25rem;--s6: 1.5rem;  --s8: 2rem;   --s10: 2.5rem;
-  --s12: 3rem;  --s16: 4rem;   --s20: 5rem;  --s24: 6rem;
-  --r-xs: 3px;  --r-sm: 5px;   --r: 8px;     --r-pill: 999px;
   --f-sans:  'DM Sans', system-ui, sans-serif;
   --f-mono:  'DM Mono', 'Courier New', monospace;
   --f-serif: 'DM Serif Display', Georgia, serif;
-  --ease: cubic-bezier(.25,.46,.45,.94); --ease-out: cubic-bezier(.16,1,.3,1);
-  --fast: 140ms; --med: 240ms; --slow: 460ms;
-  --nav-h: 60px; --max-w: 760px; --px: 2rem;
+  --ease:    cubic-bezier(.25,.46,.45,.94);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --fast: 140ms; --med: 260ms; --slow: 480ms;
+  --nav-h: 56px;
+  --max-w: 680px;
+  --px: 2rem;
 }
 
+/* DARK — ink on black, orange accent */
 [data-theme="dark"] {
-  --bg: #0c0b0a; --bg-r: #131110; --surface: #181512; --card: #1f1b18;
-  --border: #2d2720; --border-hi: #463a2e; --ink: #f0ebe4; --ink-2: #c0b4a8;
-  --muted: #7a6e64; --faint: #33291f; --orange: #e87820; --orange-hi: #ff9a40;
-  --orange-lo: rgba(232,120,32,.09); --green: #4caf7d; --rust: #c95f2a; --violet: #9b7fff;
+  --bg:      #0d0c0b;
+  --ink:     #f0ebe4;
+  --dim:     rgba(240,235,228,.45);
+  --faint:   rgba(240,235,228,.18);
+  --rule:    rgba(240,235,228,.10);
+  --accent:  #e87820;
+  --acc-dim: rgba(232,120,32,.55);
+  --acc-lo:  rgba(232,120,32,.10);
   color-scheme: dark;
 }
+
+/* LIGHT — the same palette, inverted */
 [data-theme="light"] {
-  --bg: #faf6f0; --bg-r: #f2ebe0; --surface: #e8ddd0; --card: #ffffff;
-  --border: #d0c4b4; --border-hi: #a89888; --ink: #18130e; --ink-2: #3e3228;
-  --muted: #5a5048; --faint: #b8b0a4; --orange: #c06010; --orange-hi: #e07828;
-  --orange-lo: rgba(192,96,16,.13); --green: #1e7a48; --rust: #a03010; --violet: #5a40c8;
+  --bg:      #f5f0ea;
+  --ink:     #18130e;
+  --dim:     rgba(24,19,14,.50);
+  --faint:   rgba(24,19,14,.22);
+  --rule:    rgba(24,19,14,.12);
+  --accent:  #c06010;
+  --acc-dim: rgba(192,96,16,.55);
+  --acc-lo:  rgba(192,96,16,.09);
   color-scheme: light;
 }
 
-html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); font-size: 16px; }
+/* ══════════════════════════════════════════
+   BASE
+══════════════════════════════════════════ */
+html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); }
 body {
-  font-family: var(--f-sans); font-size: var(--t-base); line-height: 1.7;
+  font-family: var(--f-sans);
+  font-size: 15px; line-height: 1.75;
   background: var(--bg); color: var(--ink);
-  -webkit-font-smoothing: antialiased; overflow-x: hidden; cursor: none;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; cursor: none;
   transition: background var(--med) var(--ease), color var(--med) var(--ease);
 }
 @media (pointer: coarse) { body { cursor: auto; } }
 
+a { color: var(--accent); text-decoration: none; transition: opacity var(--fast); }
+a:hover { opacity: .65; }
+
 /* ══════════════════════════════════════════
-   RETICLE & BACKGROUND
+   CIRCUIT CANVAS
+══════════════════════════════════════════ */
+#circuit-canvas {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none; opacity: .55;
+  transition: opacity var(--slow);
+}
+[data-theme="light"] #circuit-canvas { opacity: .22; }
+
+/* ══════════════════════════════════════════
+   RETICLE CURSOR
 ══════════════════════════════════════════ */
 #reticle {
-  position: fixed; top: 0; left: 0; width: 40px; height: 40px;
-  pointer-events: none; z-index: 9999; margin-left: -20px; margin-top: -20px;
-  transition: width var(--fast) var(--ease), height var(--fast) var(--ease);
+  position: fixed; top: 0; left: 0;
+  width: 36px; height: 36px;
+  pointer-events: none; z-index: 9999;
+  margin-left: -18px; margin-top: -18px;
+  transition: width var(--fast), height var(--fast), margin var(--fast);
 }
 #reticle svg { width: 100%; height: 100%; overflow: visible; }
-body.hov #reticle { width: 54px; height: 54px; margin-left: -27px; margin-top: -27px; }
+body.hov #reticle { width: 50px; height: 50px; margin-left: -25px; margin-top: -25px; }
 @media (pointer: coarse) { #reticle { display: none; } }
 
-#circuit-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; transition: opacity var(--slow); }
-[data-theme="light"] #circuit-canvas { opacity: .35; }
-
 /* ══════════════════════════════════════════
-   ADVANCED TELEMETRY HUD (The 3-in-1)
+   TELEMETRY HUD  (bottom-right)
+   Fixed: proper sizing, dark bg so it's
+   readable in both themes, opacity-on-move
 ══════════════════════════════════════════ */
 #status-hud {
-  position: fixed; bottom: var(--s4); right: var(--s4);
+  position: fixed; bottom: 1.25rem; right: 1.25rem;
   z-index: 50; pointer-events: none;
-  display: flex; flex-direction: column; gap: 6px;
-  opacity: 0; animation: fadeUp var(--slow) var(--ease-out) 2.2s forwards;
-  transition: opacity .6s var(--ease);
-  width: 140px;
+  display: flex; flex-direction: column; gap: 5px;
+  width: 148px;
+  opacity: 0;
+  animation: fadeUp var(--slow) var(--ease-out) 2.4s forwards;
+  transition: opacity .7s var(--ease);
 }
-#status-hud.moving { opacity: .15 !important; }
+#status-hud.moving { opacity: .1 !important; }
+
 .hud-box {
-  background: rgba(6,5,4,.65); backdrop-filter: blur(8px);
-  border: 1px solid rgba(232,120,32,.25); border-radius: var(--r-sm);
-  padding: 6px 8px; display: flex; flex-direction: column; gap: 4px;
+  background: rgba(10,9,8,.82);
+  border: 1px solid rgba(232,120,32,.22);
+  border-radius: 4px;
+  padding: 6px 8px;
+  display: flex; flex-direction: column; gap: 5px;
+  backdrop-filter: blur(6px);
 }
-[data-theme="light"] .hud-box { background: rgba(250,246,240,.7); border-color: rgba(192,96,16,.35); }
-.hud-title { font-family: var(--f-mono); font-size: 7px; color: var(--rust); letter-spacing: .1em; text-transform: uppercase; }
+/* Light mode: keep dark bg so waveform/text shows */
+[data-theme="light"] .hud-box {
+  background: rgba(8,6,4,.78);
+  border-color: rgba(192,96,16,.35);
+}
+.hud-title {
+  font-family: var(--f-mono); font-size: 7px;
+  color: var(--accent); letter-spacing: .12em;
+  text-transform: uppercase; opacity: .7;
+}
 
+/* CAN Bus terminal line */
+.hud-term {
+  font-family: var(--f-mono); font-size: 8px;
+  color: #e87820; line-height: 1.3;
+  word-break: break-all; height: 20px; overflow: hidden;
+  opacity: .85;
+}
 
-/* CAN Bus Terminal */
-.hud-term { font-family: var(--f-mono); font-size: 8px; color: var(--orange); line-height: 1.2; word-break: break-all; opacity: .8; height: 18px; overflow: hidden; }
+/* PID canvas */
+#pid-canvas {
+  display: block; width: 100%; height: 28px;
+}
 
-/* PID Graph */
-#pid-canvas { width: 100%; height: 24px; border-bottom: 1px solid rgba(232,120,32,.2); }
-
-/* G-Force Matrix */
-.g-force-wrap { display: flex; align-items: center; justify-content: space-between; }
+/* G-Force display */
+.hud-g-wrap {
+  display: flex; align-items: center;
+  justify-content: space-between;
+}
 .g-grid {
-  width: 24px; height: 24px; border: 1px solid rgba(232,120,32,.3); border-radius: 50%;
-  position: relative; display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; flex-shrink: 0;
+  border: 1px solid rgba(232,120,32,.3); border-radius: 50%;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
 }
-.g-grid::before { content:''; position:absolute; width:100%; height:1px; background:rgba(232,120,32,.2); }
-.g-grid::after { content:''; position:absolute; height:100%; width:1px; background:rgba(232,120,32,.2); }
-.g-dot { width: 4px; height: 4px; background: var(--green); border-radius: 50%; position: absolute; box-shadow: 0 0 4px var(--green); transition: transform 0.1s linear; }
-.g-val { font-family: var(--f-mono); font-size: 8px; color: var(--muted); text-align: right; }
+.g-grid::before {
+  content:''; position:absolute;
+  width:100%; height:1px; background:rgba(232,120,32,.2);
+}
+.g-grid::after {
+  content:''; position:absolute;
+  height:100%; width:1px; background:rgba(232,120,32,.2);
+}
+.g-dot {
+  width: 5px; height: 5px;
+  background: #4caf7d; border-radius: 50%;
+  position: absolute;
+  box-shadow: 0 0 5px #4caf7d;
+  transition: transform .08s linear;
+}
+.g-readout {
+  font-family: var(--f-mono); font-size: 7.5px;
+  color: rgba(232,120,32,.7); line-height: 1.5;
+  text-align: right;
+}
 
 /* ══════════════════════════════════════════
-   NAV
+   NAV — dead simple, like the references
 ══════════════════════════════════════════ */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: var(--nav-h);
-  display: flex; align-items: center; justify-content: space-between; padding: 0 var(--s10);
-  background: rgba(12,11,10,.9); backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid var(--border); transition: background var(--med), border-color var(--med);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--px);
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+  transition: background var(--med), border-color var(--med);
 }
-[data-theme="light"] nav { background: rgba(250,246,240,.96); }
+.nav-logo {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none; color: var(--ink);
+}
+.logo-svg { width: 26px; height: 26px; overflow: visible; flex-shrink: 0; }
+.logo-ring {
+  transform-origin: 16px 16px;
+  animation: gearSpin 22s linear infinite;
+}
+.nav-logo:hover .logo-ring { animation-duration: 2.5s; }
+@keyframes gearSpin { to { transform: rotate(360deg); } }
+.logo-name {
+  font-family: var(--f-mono); font-size: 12px;
+  color: var(--ink); letter-spacing: .04em;
+  opacity: 0; animation: fadeDown var(--med) .05s forwards;
+}
+.logo-name em { font-style: normal; color: var(--accent); }
 
-.nav-logo { display: flex; align-items: center; gap: var(--s2); text-decoration: none; flex-shrink: 0; }
-.logo-svg { width: 32px; height: 32px; overflow: visible; }
-.logo-ring { transform-origin: 16px 16px; animation: slowGear 20s linear infinite; }
-@keyframes slowGear { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-.nav-logo:hover .logo-ring { animation-duration: 3s; transition: animation-duration 0.8s var(--ease-out); }
-.logo-wordmark { font-family: var(--f-mono); font-size: 12px; font-weight: 500; color: var(--ink-2); letter-spacing: .05em; opacity: 0; animation: fadeDown var(--med) .05s forwards; }
-.logo-wordmark em { font-style: normal; color: var(--orange); }
-
-.nav-links { list-style: none; display: flex; gap: var(--s8); position: absolute; left: 50%; transform: translateX(-50%); }
+.nav-links {
+  list-style: none; display: flex; gap: 2rem;
+  position: absolute; left: 50%; transform: translateX(-50%);
+}
 .nav-links li { opacity: 0; animation: fadeDown var(--med) forwards; }
-.nav-links li:nth-child(1){animation-delay:.08s} .nav-links li:nth-child(2){animation-delay:.14s}
-.nav-links li:nth-child(3){animation-delay:.20s} .nav-links li:nth-child(4){animation-delay:.26s}
-.nav-links a { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); text-decoration: none; letter-spacing: .1em; text-transform: uppercase; transition: color var(--fast); position: relative; padding-bottom: 3px; }
-.nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--orange); transition: width var(--med); }
+.nav-links li:nth-child(1){animation-delay:.1s}
+.nav-links li:nth-child(2){animation-delay:.16s}
+.nav-links li:nth-child(3){animation-delay:.22s}
+.nav-links li:nth-child(4){animation-delay:.28s}
+.nav-links li:nth-child(5){animation-delay:.34s}
+.nav-links a {
+  font-family: var(--f-mono); font-size: 11px;
+  color: var(--dim); text-decoration: none;
+  letter-spacing: .1em; text-transform: uppercase;
+  transition: color var(--fast);
+  position: relative; padding-bottom: 3px;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 0; height: 1px; background: var(--accent);
+  transition: width var(--med) var(--ease);
+}
 .nav-links a:hover, .nav-links a.active { color: var(--ink); }
 .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
 
-.nav-right { flex-shrink: 0; opacity: 0; animation: fadeDown var(--med) .38s forwards; }
-.theme-btn {
-  display: flex; align-items: center; gap: var(--s2); padding: var(--s1) var(--s3);
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-sm);
-  font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); cursor: pointer;
+/* Theme toggle — minimal text button */
+.nav-right {
+  opacity: 0; animation: fadeDown var(--med) .4s forwards;
 }
-.theme-btn:hover { border-color: var(--orange); color: var(--ink); }
-.theme-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); }
+.theme-toggle {
+  font-family: var(--f-mono); font-size: 11px;
+  color: var(--dim); background: none; border: none;
+  cursor: pointer; letter-spacing: .08em;
+  transition: color var(--fast); padding: 4px;
+}
+.theme-toggle:hover { color: var(--accent); }
 
 /* ══════════════════════════════════════════
-   LAYOUT & TYPOGRAPHY
+   PAGE SHELL
 ══════════════════════════════════════════ */
 main { padding-top: var(--nav-h); position: relative; z-index: 1; }
 .inner { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--px); }
-section { padding-top: var(--s24); padding-bottom: var(--s24); }
-section:not(#hero) { background: var(--bg); transition: background var(--med); }
-hr.rule { border: none; border-top: 1px solid var(--border); margin: 0; position: relative; z-index: 1; }
 
+section {
+  padding-top: 5.5rem; padding-bottom: 5.5rem;
+  background: var(--bg); transition: background var(--med);
+}
+hr.rule {
+  border: none; border-top: 1px solid var(--rule);
+  margin: 0; position: relative; z-index: 1;
+}
+
+/* Section label */
 .label {
-  display: flex; align-items: center; gap: var(--s2);
-  font-family: var(--f-mono); font-size: var(--t-xs);
-  color: var(--orange); letter-spacing: .16em; text-transform: uppercase; margin-bottom: var(--s2);
+  font-family: var(--f-mono); font-size: 10px;
+  color: var(--accent); letter-spacing: .18em;
+  text-transform: uppercase; margin-bottom: .35rem;
+  display: flex; align-items: center; gap: 8px;
 }
-.label::before { content: ''; width: 12px; height: 1px; background: var(--orange); }
-h2 { font-family: var(--f-serif); font-weight: 400; font-size: var(--t-3xl); color: var(--ink); margin-bottom: var(--s10); }
+.label::before { content:''; width: 10px; height: 1px; background: var(--accent); }
+
+/* Headings */
+h2 {
+  font-family: var(--f-serif); font-weight: 400;
+  font-size: 2rem; color: var(--ink);
+  letter-spacing: -.02em; line-height: 1.1;
+  margin-bottom: 2.5rem;
+}
 
 /* ══════════════════════════════════════════
-   HERO
+   HERO — Rudy/Sean style: just text, no cards
 ══════════════════════════════════════════ */
-#hero { min-height: calc(100vh - var(--nav-h)); display: flex; flex-direction: column; justify-content: center; }
-
-/* The Mysterious Coordinates */
-.hero-coord {
-  font-family: var(--f-mono); font-size: var(--t-xs);
-  color: var(--rust); letter-spacing: .12em; margin-bottom: var(--s10);
-  opacity: 0; animation: fadeUp var(--slow) .05s forwards;
+#hero {
+  min-height: calc(100vh - var(--nav-h));
+  display: flex; flex-direction: column; justify-content: center;
+  padding-top: 3rem; padding-bottom: 4rem;
 }
-
 .hero-kicker {
-  display: flex; align-items: center; gap: var(--s3); font-family: var(--f-mono); font-size: var(--t-xs);
-  color: var(--orange); letter-spacing: .18em; text-transform: uppercase; margin-bottom: var(--s5);
-  opacity: 0; animation: fadeUp var(--slow) .2s forwards;
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--f-mono); font-size: 10px;
+  color: var(--accent); letter-spacing: .2em; text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  opacity: 0; animation: fadeUp var(--slow) var(--ease) .15s forwards;
 }
-.kicker-rule { width: 20px; height: 1px; background: var(--orange); }
+.kicker-rule { width: 16px; height: 1px; background: var(--accent); flex-shrink: 0; }
 
-h1 { font-family: var(--f-serif); font-weight: 400; font-size: clamp(3.6rem, 9.5vw, 6.5rem); line-height: .98; letter-spacing: -.03em; color: var(--ink); opacity: 0; animation: fadeUp var(--slow) .34s forwards; }
-h1 em { font-style: italic; color: var(--orange); }
-
-/* De-AI'd Builder Copy */
-.hero-sub { margin-top: var(--s6); max-width: 520px; font-size: 1rem; color: var(--muted); line-height: 1.8; opacity: 0; animation: fadeUp var(--slow) .48s forwards; }
-
-.hero-cta { display: flex; align-items: center; gap: var(--s3); margin-top: var(--s8); opacity: 0; animation: fadeUp var(--slow) .72s forwards; }
-.btn {
-  display: inline-flex; align-items: center; gap: var(--s2); padding: 10px 22px;
-  font-family: var(--f-sans); font-size: var(--t-sm); border-radius: var(--r-sm);
-  text-decoration: none; font-weight: 500; transition: all var(--fast);
+h1 {
+  font-family: var(--f-serif); font-weight: 400;
+  font-size: clamp(3.4rem, 9vw, 6rem);
+  line-height: .98; letter-spacing: -.03em; color: var(--ink);
+  opacity: 0; animation: fadeUp var(--slow) var(--ease) .3s forwards;
 }
-.btn-primary { background: var(--orange); color: #0c0b0a; border: 1px solid var(--orange); }
-.btn-primary:hover { background: var(--orange-hi); transform: translateY(-2px); box-shadow: 0 4px 18px rgba(232,120,32,.3); }
+h1 em { font-style: italic; color: var(--accent); }
+
+.hero-sub {
+  margin-top: 1.75rem; max-width: 480px;
+  font-size: .9375rem; color: var(--dim); line-height: 1.8;
+  opacity: 0; animation: fadeUp var(--slow) var(--ease) .45s forwards;
+}
+
+/* Currently / status line — Rudy style */
+.hero-now {
+  margin-top: 2rem;
+  font-family: var(--f-mono); font-size: 11px;
+  color: var(--dim); letter-spacing: .04em;
+  opacity: 0; animation: fadeUp var(--slow) var(--ease) .6s forwards;
+  display: flex; align-items: center; gap: 8px;
+}
+.now-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #4caf7d; box-shadow: 0 0 5px #4caf7d;
+  flex-shrink: 0; animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+.hero-links {
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+  margin-top: 2.5rem;
+  opacity: 0; animation: fadeUp var(--slow) var(--ease) .75s forwards;
+}
+.hero-links a {
+  font-family: var(--f-mono); font-size: 11px;
+  color: var(--dim); text-decoration: none; letter-spacing: .06em;
+  transition: color var(--fast);
+  display: flex; align-items: center; gap: 5px;
+}
+.hero-links a:hover { color: var(--accent); opacity: 1; }
+.hero-links a::before { content: '↗'; color: var(--accent); font-size: 9px; }
 
 /* ══════════════════════════════════════════
-   EXPERIENCE - "CURRENTLY / PREVIOUSLY"
+   ABOUT — one paragraph, plain
 ══════════════════════════════════════════ */
-.exp-section-title { font-family: var(--f-mono); font-size: var(--t-sm); color: var(--orange); text-transform: uppercase; letter-spacing: .1em; margin-bottom: var(--s4); padding-bottom: var(--s2); border-bottom: 1px solid var(--border); }
-.timeline-item { display: grid; grid-template-columns: 1fr; gap: var(--s1); margin-bottom: var(--s8); }
-.exp-title { font-size: var(--t-lg); font-family: var(--f-serif); color: var(--ink); }
-.exp-org { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); text-decoration: none; margin-bottom: var(--s2); display: block; }
-.exp-bullets { list-style: none; display: flex; flex-direction: column; gap: var(--s1); margin-top: var(--s2); }
-.exp-bullets li { font-size: var(--t-sm); color: var(--muted); padding-left: var(--s4); position: relative; }
-.exp-bullets li::before { content: '>'; position: absolute; left: 0; color: var(--orange); font-family: var(--f-mono); }
+.about-body {
+  font-size: .9375rem; color: var(--dim); line-height: 1.85;
+  max-width: 560px;
+}
+.about-body p + p { margin-top: 1rem; }
+
+/* Fact table — Rudy-style inline list */
+.fact-table {
+  margin-top: 2rem;
+  display: flex; flex-direction: column; gap: 0;
+}
+.fact-row {
+  display: flex; align-items: baseline; gap: 1.5rem;
+  padding: .55rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 13px;
+}
+.fact-row:first-child { border-top: 1px solid var(--rule); }
+.fact-k {
+  font-family: var(--f-mono); font-size: 9px;
+  color: var(--acc-dim); letter-spacing: .12em;
+  text-transform: uppercase; min-width: 72px; flex-shrink: 0;
+}
+.fact-v { color: var(--ink); }
 
 /* ══════════════════════════════════════════
-   CIPHER CLASS
+   EXPERIENCE — flat timeline
 ══════════════════════════════════════════ */
-.cipher { display: inline-block; }
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.exp-item {
+  display: grid; grid-template-columns: 100px 1fr;
+  gap: 0 2rem; padding: 1.75rem 0;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+.exp-item:first-child { border-top: 1px solid var(--rule); }
+.exp-item:last-child  { border-bottom: none; }
+/* Left accent line on hover */
+.exp-item::before {
+  content: ''; position: absolute;
+  left: calc(-1 * var(--px)); top: 0; bottom: 0; width: 1.5px;
+  background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
+  transform: scaleY(0); transform-origin: top;
+  transition: transform var(--slow) var(--ease);
+}
+.exp-item:hover::before { transform: scaleY(1); }
+.exp-date {
+  font-family: var(--f-mono); font-size: 9px;
+  color: var(--acc-dim); letter-spacing: .05em;
+  line-height: 1.6; padding-top: 3px;
+}
+.exp-title {
+  font-family: var(--f-serif); font-size: 1.15rem;
+  color: var(--ink); margin-bottom: .2rem;
+}
+.exp-org {
+  font-family: var(--f-mono); font-size: 10px;
+  color: var(--acc-dim); letter-spacing: .04em;
+  margin-bottom: .65rem; display: inline-flex;
+  align-items: center; gap: 4px; text-decoration: none;
+  transition: color var(--fast);
+}
+.exp-org:hover { color: var(--accent); opacity: 1; }
+.exp-org-plain { cursor: default; }
+.exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.exp-bullets li {
+  font-size: 13px; color: var(--dim);
+  padding-left: 1.1rem; position: relative; line-height: 1.65;
+}
+.exp-bullets li::before {
+  content: '>'; position: absolute; left: 0;
+  color: var(--accent); font-family: var(--f-mono); font-size: 10px;
+}
+@media (max-width: 640px) {
+  .exp-item { grid-template-columns: 1fr; gap: .25rem; }
+  .exp-item::before { display: none; }
+}
 
-/* Utilities, Projects, Skills (Condensed for brevity, relying on your existing structures) */
-.projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
-.project-card { display: flex; flex-direction: column; gap: var(--s3); padding: var(--s5); background: var(--card); border: 1px solid var(--border); border-radius: var(--r); text-decoration: none; transition: transform var(--fast), border-color var(--fast); }
-.project-card:hover { border-color: var(--orange); transform: translateY(-3px); }
-.project-name { font-family: var(--f-mono); font-size: var(--t-sm); color: var(--ink); }
-.project-desc { font-size: 13px; color: var(--muted); }
-.tag { font-family: var(--f-mono); font-size: 9px; padding: 2px 6px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-xs); color: var(--muted); }
+/* ══════════════════════════════════════════
+   PROJECTS — plain list, not a card grid
+══════════════════════════════════════════ */
+.project-list { display: flex; flex-direction: column; gap: 0; }
+.project-item {
+  display: flex; align-items: flex-start;
+  gap: 1.5rem; padding: 1.25rem 0;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none; color: inherit;
+  transition: background var(--fast);
+  position: relative;
+}
+.project-item:first-child { border-top: 1px solid var(--rule); }
+.project-item::before {
+  content: ''; position: absolute; left: -2rem; top: 0; bottom: 0;
+  width: 1.5px;
+  background: var(--accent);
+  transform: scaleY(0); transform-origin: top;
+  transition: transform var(--slow) var(--ease);
+}
+.project-item:hover::before { transform: scaleY(1); }
+.proj-num {
+  font-family: var(--f-mono); font-size: 9px;
+  color: var(--acc-dim); min-width: 24px;
+  padding-top: 4px; letter-spacing: .06em;
+}
+.proj-body { flex: 1; }
+.proj-name {
+  font-family: var(--f-serif); font-size: 1.1rem;
+  color: var(--ink); margin-bottom: .25rem;
+  display: flex; align-items: center; gap: 6px;
+}
+.proj-name .proj-link {
+  font-family: var(--f-mono); font-size: 9px;
+  color: var(--acc-dim); letter-spacing: .06em;
+  transition: color var(--fast);
+}
+.project-item:hover .proj-link { color: var(--accent); }
+.proj-desc { font-size: 13px; color: var(--dim); line-height: 1.65; }
+.proj-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: .6rem; }
+.tag {
+  font-family: var(--f-mono); font-size: 8.5px;
+  letter-spacing: .05em; padding: 2px 6px;
+  background: var(--acc-lo); color: var(--acc-dim);
+  border-radius: 3px;
+}
+.proj-award {
+  font-family: var(--f-mono); font-size: 9px;
+  color: var(--accent); letter-spacing: .06em;
+  margin-top: .4rem; display: block;
+}
 
-/* Reveal Animation */
-.reveal { opacity: 0; transform: translateY(16px); transition: opacity .55s var(--ease-out), transform .55s var(--ease-out); }
+/* ══════════════════════════════════════════
+   SKILLS — plain inline lists
+══════════════════════════════════════════ */
+.skills-block { margin-bottom: 2rem; }
+.skills-block:last-child { margin-bottom: 0; }
+.skills-block-title {
+  font-family: var(--f-mono); font-size: 9px;
+  color: var(--acc-dim); letter-spacing: .14em;
+  text-transform: uppercase; margin-bottom: .75rem;
+}
+.skills-inline {
+  display: flex; flex-wrap: wrap; gap: .4rem 1rem;
+  font-size: 13.5px; color: var(--dim); line-height: 1.7;
+}
+.skills-inline span::before { content: '— '; color: var(--acc-dim); font-family: var(--f-mono); font-size: 9px; }
+
+.cert-line {
+  margin-top: 2rem; padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--f-mono); font-size: 10px;
+  color: var(--dim); letter-spacing: .06em;
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+}
+.cert-line span::before { content: '✦ '; color: var(--accent); }
+
+/* ══════════════════════════════════════════
+   CONTACT — Rudy style: plain links
+══════════════════════════════════════════ */
+.contact-line {
+  font-family: var(--f-mono); font-size: 12px;
+  color: var(--dim); letter-spacing: .04em;
+  display: flex; flex-wrap: wrap; gap: .35rem 0;
+  line-height: 2;
+}
+.contact-line a {
+  color: var(--ink);
+  transition: color var(--fast);
+  margin-right: .25rem;
+}
+.contact-line a:hover { color: var(--accent); opacity: 1; }
+.contact-sep { color: var(--acc-dim); margin: 0 .4rem; }
+
+/* ══════════════════════════════════════════
+   EASTER EGG
+══════════════════════════════════════════ */
+#easter-egg {
+  background: var(--bg); padding: 4rem var(--px) 5rem;
+  max-width: var(--max-w); margin: 0 auto;
+  position: relative; z-index: 1;
+  transition: background var(--med);
+}
+.egg-prompt {
+  display: flex; flex-direction: column; gap: .75rem;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .65s var(--ease-out), transform .65s var(--ease-out);
+}
+.egg-prompt.visible { opacity: 1; transform: translateY(0); }
+.egg-tag {
+  font-family: var(--f-mono); font-size: 9px;
+  color: var(--acc-dim); letter-spacing: .16em; text-transform: uppercase;
+}
+.egg-sub { font-size: 13px; color: var(--dim); line-height: 1.65; max-width: 300px; }
+.egg-btn {
+  display: inline-block; padding: 7px 16px; margin-top: .25rem;
+  background: none; border: 1px solid var(--rule);
+  border-radius: 3px; font-family: var(--f-mono);
+  font-size: 10px; color: var(--dim); letter-spacing: .08em;
+  cursor: pointer; transition: border-color var(--fast), color var(--fast);
+}
+.egg-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Car strip */
+.car-strip { width: 100%; height: 50px; position: relative; overflow: hidden; margin: 1.5rem 0 1rem; }
+.road-dashes {
+  position: absolute; bottom: 8px; left: 0; right: 0; height: 1px;
+  background: repeating-linear-gradient(90deg, var(--rule) 0, var(--rule) 12px, transparent 12px, transparent 24px);
+}
+#car-svg { position: absolute; bottom: 2px; animation: drive 8s linear infinite; }
+@keyframes drive { from{left:-160px} to{left:calc(100% + 24px)} }
+
+.fun-facts { display: none; flex-direction: column; gap: .75rem; margin-top: 1.25rem; }
+.fun-facts.shown { display: flex; }
+.fun-fact {
+  padding: 1rem 1.25rem;
+  border-left: 2px solid var(--accent);
+  background: var(--acc-lo);
+  border-radius: 0 3px 3px 0;
+  opacity: 0; transform: translateX(-6px);
+  transition: opacity .4s var(--ease-out), transform .4s var(--ease-out);
+}
+.fun-fact.pop { opacity: 1; transform: translateX(0); }
+.fun-fact-label {
+  font-family: var(--f-mono); font-size: 9px;
+  color: var(--accent); letter-spacing: .14em;
+  text-transform: uppercase; margin-bottom: .4rem;
+}
+.fun-fact-text { font-size: 13px; color: var(--dim); line-height: 1.7; }
+.fun-fact-text em { font-style: italic; color: var(--ink); }
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer {
+  background: var(--bg); border-top: 1px solid var(--rule);
+  padding: 1.5rem var(--px);
+  font-family: var(--f-mono); font-size: 10px;
+  color: var(--faint); letter-spacing: .08em;
+  text-align: center;
+  position: relative; z-index: 2;
+  transition: background var(--med);
+}
+
+/* ══════════════════════════════════════════
+   REVEAL & KEYFRAMES
+══════════════════════════════════════════ */
+.reveal {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .55s var(--ease-out), transform .55s var(--ease-out);
+}
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
+@keyframes fadeUp   { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-5px)} to{opacity:1;transform:translateY(0)} }
+
+/* ══════════════════════════════════════════
+   REDUCED MOTION
+══════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+  #circuit-canvas { display: none; }
+  #reticle { display: none; }
+  body { cursor: auto; }
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 640px) {
+  :root { --nav-h: 52px; --px: 1.25rem; }
+  .nav-links { display: none; }
+  h1 { font-size: 3rem; }
+  h2 { font-size: 1.65rem; }
+  .project-item { flex-direction: column; gap: .5rem; }
+  #reticle, #status-hud, .ann { display: none; }
+  body { cursor: auto; }
+}
 </style>
 </head>
 <body>
 
-<div id="reticle"><svg viewBox="-26 -26 52 52"><g id="ret-spin"><circle cx="0" cy="0" r="16" fill="none" stroke="#e87820" stroke-width="1" opacity=".65"/><line x1="16" y1="0" x2="19.5" y2="0" stroke="#e87820"/><line x1="-16" y1="0" x2="-19.5" y2="0" stroke="#e87820"/><line x1="0" y1="16" x2="0" y2="19.5" stroke="#e87820"/><line x1="0" y1="-16" x2="0" y2="-19.5" stroke="#e87820"/></g><line x1="-24" y1="0" x2="-5" y2="0" stroke="#e87820"/><line x1="5" y1="0" x2="24" y2="0" stroke="#e87820"/><line x1="0" y1="-24" x2="0" y2="-5" stroke="#e87820"/><line x1="0" y1="5" x2="0" y2="24" stroke="#e87820"/><circle id="ret-dot" cx="0" cy="0" r="1.8" fill="#e87820"/></svg></div>
+<!-- Reticle -->
+<div id="reticle" aria-hidden="true">
+  <svg viewBox="-26 -26 52 52">
+    <g id="ret-spin">
+      <circle cx="0" cy="0" r="16" fill="none" stroke="#e87820" stroke-width="1" opacity=".6"/>
+      <line x1="16" y1="0" x2="19.5" y2="0" stroke="#e87820" stroke-width="1" opacity=".6"/>
+      <line x1="-16" y1="0" x2="-19.5" y2="0" stroke="#e87820" stroke-width="1" opacity=".6"/>
+      <line x1="0" y1="16" x2="0" y2="19.5" stroke="#e87820" stroke-width="1" opacity=".6"/>
+      <line x1="0" y1="-16" x2="0" y2="-19.5" stroke="#e87820" stroke-width="1" opacity=".6"/>
+    </g>
+    <line x1="-24" y1="0" x2="-5" y2="0" stroke="#e87820" stroke-width=".9" opacity=".55"/>
+    <line x1="5" y1="0" x2="24" y2="0" stroke="#e87820" stroke-width=".9" opacity=".55"/>
+    <line x1="0" y1="-24" x2="0" y2="-5" stroke="#e87820" stroke-width=".9" opacity=".55"/>
+    <line x1="0" y1="5" x2="0" y2="24" stroke="#e87820" stroke-width=".9" opacity=".55"/>
+    <circle id="ret-dot" cx="0" cy="0" r="1.8" fill="#e87820"/>
+  </svg>
+</div>
+
+<!-- Background circuit -->
 <canvas id="circuit-canvas"></canvas>
 
+<!-- Telemetry HUD -->
 <div id="status-hud">
   <div class="hud-box">
     <div class="hud-title">CAN_BUS // RX</div>
-    <div class="hud-term" id="hud-can">WAITING FOR DATA...</div>
+    <div class="hud-term" id="hud-can">WAITING...</div>
   </div>
   <div class="hud-box">
     <div class="hud-title">PID_STEP_RESP</div>
     <canvas id="pid-canvas"></canvas>
   </div>
-  <div class="hud-box g-force-wrap">
-    <div>
-      <div class="hud-title">G_FORCE</div>
-      <div class="g-val" id="g-val">X:0 Y:0</div>
+  <div class="hud-box">
+    <div class="hud-title">G_FORCE</div>
+    <div class="hud-g-wrap">
+      <div class="g-readout" id="g-val">X: 0.00<br>Y: 0.00</div>
+      <div class="g-grid"><div class="g-dot" id="g-dot"></div></div>
     </div>
-    <div class="g-grid"><div class="g-dot" id="g-dot"></div></div>
   </div>
 </div>
 
+<!-- Nav -->
 <nav>
   <a href="#hero" class="nav-logo">
     <svg class="logo-svg" viewBox="0 0 32 32" fill="none">
-      <defs><linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--orange)" /><stop offset="100%" style="stop-color:var(--rust)" /></linearGradient></defs>
-      <g class="logo-ring"><path d="M16 2L29.8564 10V22L16 30L2.14359 22V10L16 2Z" stroke="url(#logo-grad)" stroke-width="1.2" opacity="0.8"/><circle cx="16" cy="2" r="1.5" fill="var(--orange)" /><circle cx="29.8564" cy="10" r="1.2" fill="var(--orange)" opacity="0.6" /><circle cx="29.8564" cy="22" r="1.2" fill="var(--violet)" opacity="0.5" /><circle cx="16" cy="30" r="1.5" fill="var(--orange)" /><circle cx="2.14359" cy="22" r="1.2" fill="var(--orange)" opacity="0.6" /><circle cx="2.14359" cy="10" r="1.2" fill="var(--violet)" opacity="0.5" /></g>
-      <text x="16" y="20.5" text-anchor="middle" font-family="var(--f-mono)" font-size="8.5" font-weight="600" fill="var(--ink)">SZ</text>
+      <g class="logo-ring">
+        <path d="M16 2L29.86 10V22L16 30L2.14 22V10Z"
+          stroke="#e87820" stroke-width="1.1" fill="none" opacity=".72"/>
+        <circle cx="16" cy="2" r="1.4" fill="#e87820"/>
+        <circle cx="29.86" cy="10" r="1.1" fill="#e87820" opacity=".7"/>
+        <circle cx="29.86" cy="22" r="1.1" fill="#e87820" opacity=".5"/>
+        <circle cx="16" cy="30" r="1.4" fill="#e87820"/>
+        <circle cx="2.14" cy="22" r="1.1" fill="#e87820" opacity=".7"/>
+        <circle cx="2.14" cy="10" r="1.1" fill="#e87820" opacity=".5"/>
+      </g>
+      <text x="16" y="20.5" text-anchor="middle"
+        font-family="DM Mono,monospace" font-size="9" font-weight="600"
+        fill="#f0ebe4" letter-spacing="-.3">SZ</text>
     </svg>
+    <span class="logo-name">sobhan<em>.</em>dev</span>
   </a>
+
   <ul class="nav-links">
-    <li><a href="#about">About</a></li><li><a href="#experience">Experience</a></li><li><a href="#projects">Projects</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ul>
+
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme">
+      <span id="theme-label">Light</span>
+    </button>
+  </div>
 </nav>
 
 <main>
 
+<!-- ── HERO ── -->
 <section id="hero">
   <div class="inner">
-    <p class="hero-coord cipher" data-text="43.4684° N · 80.5195° W">INITIALIZING...</p>
-    <p class="hero-kicker"><span class="kicker-rule"></span><span id="eyebrow-text">Mechatronics @ Waterloo</span></p>
+    <p class="hero-kicker">
+      <span class="kicker-rule"></span>
+      <span id="eyebrow-text"></span>
+    </p>
     <h1>Sobhan<br><em>Zare.</em></h1>
-    <p class="hero-sub">I build mechatronic systems. Currently designing drivetrains for UW Formula Electric, writing C++ control logic for autonomous robots, and looking for hard engineering problems at early-stage startups.</p>
-    <div class="hero-cta"><a href="#projects" class="btn btn-primary cipher" data-text="View Projects">View Projects</a></div>
+    <p class="hero-sub">
+      I build mechatronic systems — control loops, embedded firmware, physical
+      hardware. Currently on the driveline team at UW Formula Electric, figuring
+      out how to make an electric car go faster.
+    </p>
+    <div class="hero-now">
+      <span class="now-dot"></span>
+      <span>Driveline @ UW Formula Electric · Waterloo, ON</span>
+    </div>
+    <div class="hero-links">
+      <a href="mailto:mr.sobhan.z@gmail.com">Email</a>
+      <a href="https://github.com/mrsobhanz" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/sobhan-zr" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
   </div>
 </section>
 
 <hr class="rule">
 
+<!-- ── ABOUT ── -->
 <section id="about">
-  <div class="inner reveal">
-    <p class="label">About</p>
-    <h2 class="cipher" data-text="Hardware & Software">Hardware & Software</h2>
-    <p style="color:var(--muted); max-width: 600px;">I care about things that actually work in the real world. Whether it's machining a custom robot chassis for a McMaster SUMO competition, writing embedded C++ to sort playing cards, or stripping down an EV drivetrain, I build, test, break it, and build it again.</p>
+  <div class="inner">
+    <div class="reveal">
+      <p class="label">About</p>
+      <h2 class="cipher" data-text="A bit about me">A bit about me</h2>
+      <div class="about-body">
+        <p>Mechatronics Engineering at Waterloo. My thing is building systems where
+        software, circuits, and physical hardware all have to work together at once —
+        and debugging when they don't.</p>
+        <p>I've worked on a card-sorting robot, a competition SUMO bot that took
+        first place, and I'm currently on the driveline team for a formula electric
+        car. The through-line is that I like making physical things move correctly.</p>
+        <p>Outside the lab: EVs, automotive engineering, anything with an interesting
+        control problem underneath it.</p>
+      </div>
+    </div>
+    <div class="fact-table reveal">
+      <div class="fact-row">
+        <span class="fact-k">Program</span>
+        <span class="fact-v">BASc Mechatronics Engineering</span>
+      </div>
+      <div class="fact-row">
+        <span class="fact-k">School</span>
+        <span class="fact-v">University of Waterloo</span>
+      </div>
+      <div class="fact-row">
+        <span class="fact-k">Location</span>
+        <span class="fact-v">Ontario, Canada</span>
+      </div>
+      <div class="fact-row">
+        <span class="fact-k">Interests</span>
+        <span class="fact-v">Automotive · EVs · Control Systems</span>
+      </div>
+    </div>
   </div>
 </section>
 
 <hr class="rule">
 
+<!-- ── EXPERIENCE ── -->
 <section id="experience">
   <div class="inner">
     <div class="reveal">
       <p class="label">Log</p>
       <h2 class="cipher" data-text="Experience">Experience</h2>
     </div>
-    
-    <div class="exp-section-title reveal">Currently</div>
-    <div class="timeline-item reveal">
-      <div class="exp-title">Driveline Team Member</div>
-      <a href="#" class="exp-org">UW Formula Electric Team (Sep 2025 - Present)</a>
-      <ul class="exp-bullets">
-        <li>Integrating motor, transmission, and control systems to meet dynamic vehicle performance targets.</li>
-        <li>Performing system testing and data analysis to validate driveline efficiency.</li>
-      </ul>
-    </div>
 
-    <div class="exp-section-title reveal" style="margin-top:var(--s10)">Previously</div>
-    <div class="timeline-item reveal">
-      <div class="exp-title">Junior Software Developer</div>
-      <span class="exp-org">BAASS Business Solutions Inc. (Oct 2023 - Jan 2024)</span>
-      <ul class="exp-bullets">
-        <li>Designed and prototyped an AI agent for Sage accounting software to streamline user workflows.</li>
-        <li>Cleaned and restructured client records in Sage CRM.</li>
-      </ul>
+    <div class="timeline reveal">
+
+      <div class="exp-item">
+        <div class="exp-date">Sep 2025<br>Present</div>
+        <div>
+          <div class="exp-title">Driveline Team Member</div>
+          <a href="https://www.uwfsae.ca/recruitment" target="_blank" rel="noopener" class="exp-org">UW Formula Electric Team ↗</a>
+          <ul class="exp-bullets">
+            <li>Working on motor, transmission, and control system integration for the electric driveline.</li>
+            <li>Running system tests and pulling data to validate driveline efficiency under real load.</li>
+            <li>Hands-on manufacturing and assembly alongside the rest of the team.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date">Oct 2023<br>Jan 2024</div>
+        <div>
+          <div class="exp-title">Junior Software Developer</div>
+          <a href="https://www.baass.com" target="_blank" rel="noopener" class="exp-org">BAASS Business Solutions Inc. ↗</a>
+          <ul class="exp-bullets">
+            <li>Designed and prototyped an AI agent for Sage accounting software to streamline user workflows.</li>
+            <li>Improved data quality by cleaning and restructuring client records in Sage CRM.</li>
+            <li>Shipped incremental production improvements working alongside senior developers.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date">Oct 2022<br>Aug 2023</div>
+        <div>
+          <div class="exp-title">Private Math Tutor</div>
+          <span class="exp-org exp-org-plain">Self-Employed</span>
+          <ul class="exp-bullets">
+            <li>Taught Grade 8 mathematics with lesson plans tailored to individual learning styles.</li>
+            <li>Tracked student progress over time, adjusting instruction based on observed outcomes.</li>
+          </ul>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
 <hr class="rule">
 
+<!-- ── PROJECTS ── -->
 <section id="projects">
   <div class="inner">
     <div class="reveal">
       <p class="label">Builds</p>
       <h2 class="cipher" data-text="Projects">Projects</h2>
     </div>
-    <div class="projects-grid reveal">
-      <a class="project-card" href="#">
-        <div class="project-name">Robotic Dispensing System</div>
-        <div class="project-desc">Autonomous mechatronic system that shuffles and dispenses playing cards using a custom PID controller.</div>
-        <div style="display:flex;gap:4px;margin-top:8px;"><span class="tag">C++</span><span class="tag">Mechatronics</span></div>
+    <div class="project-list reveal">
+
+      <a class="project-item"
+         href="https://drive.google.com/drive/folders/1v6PohkRCOrPPpIKXrYFrlvJYWfryb5s1?usp=sharing"
+         target="_blank" rel="noopener">
+        <span class="proj-num">001</span>
+        <div class="proj-body">
+          <div class="proj-name">
+            Card Analysis &amp; Robotic Dispensing System
+            <span class="proj-link">↗ Drive</span>
+          </div>
+          <div class="proj-desc">Built for a design course with a deliberately open brief. Made a machine to shuffle, dispense and sort a deck of cards — C++ on a microcontroller, optical sensors, a PID loop to keep the motors honest, and a lot of iterative debugging to get it demo-reliable.</div>
+          <div class="proj-tags">
+            <span class="tag">C++</span><span class="tag">PID Control</span>
+            <span class="tag">Sensor Integration</span><span class="tag">Embedded</span>
+          </div>
+        </div>
       </a>
-      <a class="project-card" href="#">
-        <div class="project-name">SUMO Bot</div>
-        <div class="project-desc">1st place at McMaster SUMO Bot. Designed chassis in SolidWorks, embedded C++ control logic.</div>
-        <div style="display:flex;gap:4px;margin-top:8px;"><span class="tag">SolidWorks</span><span class="tag">C++</span></div>
+
+      <a class="project-item"
+         href="https://www.sumobot.ca/competition?rules=Beginner"
+         target="_blank" rel="noopener">
+        <span class="proj-num">002</span>
+        <div class="proj-body">
+          <div class="proj-name">
+            Robotics Club — SUMO Bot
+            <span class="proj-link">↗ McMaster Rules</span>
+          </div>
+          <div class="proj-desc">Led the build team for the school robotics club. Chassis in SolidWorks and Fusion 360, drive logic in C++, a lot of time obsessing over weight distribution and torque limits. Won McMaster. Good day.</div>
+          <span class="proj-award">🏆 1st Place — McMaster SUMO Bot</span>
+          <div class="proj-tags">
+            <span class="tag">SolidWorks</span><span class="tag">Fusion 360</span>
+            <span class="tag">C++</span><span class="tag">Robotics</span>
+          </div>
+        </div>
       </a>
+
+      <a class="project-item"
+         href="https://github.com/mrsobhanz"
+         target="_blank" rel="noopener">
+        <span class="proj-num">003</span>
+        <div class="proj-body">
+          <div class="proj-name">
+            Game Development
+            <span class="proj-link">↗ GitHub</span>
+          </div>
+          <div class="proj-desc">Wordle and Flappy Bird clones written from scratch in Java and C++. Mostly an exercise in getting the logic right — collision detection, state machines, input handling. Nothing fancy, but they work cleanly.</div>
+          <div class="proj-tags">
+            <span class="tag">Java</span><span class="tag">C++</span>
+            <span class="tag">Algorithms</span>
+          </div>
+        </div>
+      </a>
+
     </div>
   </div>
 </section>
 
+<hr class="rule">
+
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <div class="inner">
+    <div class="reveal">
+      <p class="label">Stack</p>
+      <h2 class="cipher" data-text="Skills &amp; tools">Skills &amp; tools</h2>
+    </div>
+    <div class="reveal">
+      <div class="skills-block">
+        <div class="skills-block-title">Programming</div>
+        <div class="skills-inline">
+          <span>Java</span><span>C++</span><span>Arduino C</span><span>VEXIQ</span>
+        </div>
+      </div>
+      <div class="skills-block">
+        <div class="skills-block-title">Tools &amp; Platforms</div>
+        <div class="skills-inline">
+          <span>SolidWorks</span><span>Fusion 360</span><span>AutoCAD</span>
+          <span>Git</span><span>Sage CRM</span>
+        </div>
+      </div>
+      <div class="skills-block">
+        <div class="skills-block-title">Engineering</div>
+        <div class="skills-inline">
+          <span>Control Systems</span><span>Sensor Integration</span>
+          <span>System Testing</span><span>GD&amp;T</span><span>Engineering Drawings</span>
+        </div>
+      </div>
+      <div class="cert-line">
+        <span>CSWA Certified</span>
+        <span>WHMIS 2015</span>
+        <span>CPR Certified</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="inner">
+    <div class="reveal">
+      <p class="label">Contact</p>
+      <h2 class="cipher" data-text="Get in touch">Get in touch</h2>
+      <div class="contact-line">
+        <a href="mailto:mr.sobhan.z@gmail.com">mr.sobhan.z@gmail.com</a>
+        <span class="contact-sep">·</span>
+        <a href="tel:6478365458">647-836-5458</a>
+        <span class="contact-sep">·</span>
+        <a href="https://github.com/mrsobhanz" target="_blank" rel="noopener">GitHub ↗</a>
+        <span class="contact-sep">·</span>
+        <a href="https://www.linkedin.com/in/sobhan-zr" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EASTER EGG ── -->
+<div id="easter-egg">
+  <div class="egg-prompt" id="egg-prompt">
+    <span class="egg-tag">You made it to the end</span>
+    <p class="egg-sub">Not many people scroll this far. Here's a little easter egg for ya!</p>
+    <button class="egg-btn" onclick="revealEgg()">Read the origin story</button>
+  </div>
+  <div class="fun-facts" id="fun-facts">
+    <div class="car-strip">
+      <div class="road-dashes"></div>
+      <svg id="car-svg" width="150" height="52" viewBox="0 0 150 52">
+        <polygon points="10,38 18,24 38,16 80,14 112,16 136,26 140,38" fill="#e87820" opacity=".85"/>
+        <polygon points="38,16 48,8 96,8 112,16" fill="#c95f2a" opacity=".7"/>
+        <line x1="48" y1="8" x2="38" y2="16" stroke="#0c0b0a" stroke-width="1" opacity=".4"/>
+        <line x1="96" y1="8" x2="112" y2="16" stroke="#0c0b0a" stroke-width="1" opacity=".4"/>
+        <rect x="135" y="30" width="3" height="8" fill="#5a4030" opacity=".5"/>
+        <circle cx="38"  cy="40" r="10" fill="#141210" stroke="#e87820" stroke-width="1.5"/>
+        <circle cx="38"  cy="40" r="4"  fill="#e87820" opacity=".45"/>
+        <circle cx="38"  cy="40" r="1.5" fill="#f0ebe4"/>
+        <circle cx="112" cy="40" r="10" fill="#141210" stroke="#e87820" stroke-width="1.5"/>
+        <circle cx="112" cy="40" r="4"  fill="#e87820" opacity=".45"/>
+        <circle cx="112" cy="40" r="1.5" fill="#f0ebe4"/>
+        <polygon points="14,30 18,26 26,25 26,30" fill="#fffbe8" opacity=".65"/>
+        <rect x="136" y="26" width="6" height="5" rx="1" fill="#ff4422" opacity=".75"/>
+        <rect x="58"  y="22" width="22" height="5" rx="1" fill="#0c0b0a" opacity=".35"/>
+        <circle cx="6" cy="37" r="3" fill="#786e64" opacity=".3"/>
+      </svg>
+    </div>
+    <div class="fun-fact" id="ff1">
+      <div class="fun-fact-label">Origin #1 — The Computer</div>
+      <div class="fun-fact-text">My love for computers and technology started at the age of <em>11</em> when I had to fix a CD drive in our family computer. That one repair opened a door I never closed.</div>
+    </div>
+    <div class="fun-fact" id="ff2">
+      <div class="fun-fact-label">Origin #2 — The Car</div>
+      <div class="fun-fact-text">My love for cars started at the age of <em>4</em> when I first saw the release of the <em>Lamborghini Aventador LP 700-4</em> finished in <em>Arancio Argos</em> — circa 2011. That orange has never left me.</div>
+    </div>
+  </div>
+</div>
+
 </main>
+
+<footer>Sobhan Zare · 2026</footer>
 
 <script>
 /* ══════════════════════════════════════════════
-   RETICLE & THEME
+   RETICLE
 ══════════════════════════════════════════════ */
 const reticleEl = document.getElementById('reticle');
 const retSpinEl = document.getElementById('ret-spin');
+const retDotEl  = document.getElementById('ret-dot');
 let spinDeg = 0;
+
 document.addEventListener('mousemove', e => {
   reticleEl.style.left = e.clientX + 'px';
-  reticleEl.style.top = e.clientY + 'px';
+  reticleEl.style.top  = e.clientY + 'px';
 });
 (function spinLoop() {
-  spinDeg = (spinDeg + 0.5) % 360;
+  spinDeg = (spinDeg + 0.45) % 360;
   retSpinEl.style.transform = `rotate(${spinDeg}deg)`;
+  retSpinEl.style.transformOrigin = '0 0';
   requestAnimationFrame(spinLoop);
 })();
 document.querySelectorAll('a, button').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+  el.addEventListener('mouseenter', () => {
+    document.body.classList.add('hov');
+    retDotEl.setAttribute('r', '2.6');
+  });
+  el.addEventListener('mouseleave', () => {
+    document.body.classList.remove('hov');
+    retDotEl.setAttribute('r', '1.8');
+  });
 });
 
 /* ══════════════════════════════════════════════
-   HACKER CIPHER REVEAL (Sean Chan-Sato style)
+   THEME
 ══════════════════════════════════════════════ */
-const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
-function runCipher(el) {
-  const finalStr = el.getAttribute('data-text');
-  if(!finalStr) return;
-  let iterations = 0;
-  clearInterval(el.cipherInterval);
-  el.cipherInterval = setInterval(() => {
-    el.innerText = finalStr.split('').map((letter, index) => {
-      if(index < iterations || letter === ' ') return letter;
-      return chars[Math.floor(Math.random() * chars.length)];
-    }).join('');
-    if(iterations >= finalStr.length) clearInterval(el.cipherInterval);
-    iterations += 1/2; // Speed of decode
-  }, 30);
+let currentTheme = localStorage.getItem('sz-theme') || 'dark';
+
+function applyTheme(t) {
+  const resolved = t === 'system'
+    ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+    : t;
+  document.documentElement.setAttribute('data-theme', resolved);
+  document.getElementById('theme-label').textContent =
+    resolved === 'dark' ? 'Light' : 'Dark';
+  // Sync reticle
+  const col = resolved === 'dark' ? '#e87820' : '#c06010';
+  reticleEl.querySelectorAll('[stroke]').forEach(el => el.setAttribute('stroke', col));
+  retDotEl.setAttribute('fill', col);
+  rebuildCircuit();
 }
 
-// Trigger cipher on scroll intersection
+document.getElementById('themeBtn').addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  currentTheme = cur === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('sz-theme', currentTheme);
+  applyTheme(currentTheme);
+});
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
+  if (currentTheme === 'system') applyTheme('system');
+});
+applyTheme(currentTheme);
+
+/* ══════════════════════════════════════════════
+   CIPHER EFFECT
+══════════════════════════════════════════════ */
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*_+-=<>?';
+function runCipher(el) {
+  const final = el.getAttribute('data-text');
+  if (!final) return;
+  let iter = 0;
+  clearInterval(el._cipher);
+  el._cipher = setInterval(() => {
+    el.innerText = final.split('').map((ch, i) => {
+      if (i < iter || ch === ' ' || ch === '&') return ch;
+      return CHARS[Math.floor(Math.random() * CHARS.length)];
+    }).join('');
+    iter += 0.6;
+    if (iter >= final.length) {
+      el.innerText = final;
+      clearInterval(el._cipher);
+    }
+  }, 28);
+}
+// On scroll into view
 const cipherObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
-    if(e.isIntersecting) {
-      runCipher(e.target);
-      cipherObs.unobserve(e.target);
-    }
+    if (e.isIntersecting) { runCipher(e.target); cipherObs.unobserve(e.target); }
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.cipher').forEach(el => cipherObs.observe(el));
 
-// Trigger cipher on button hover
-document.querySelectorAll('.btn.cipher').forEach(btn => {
-  btn.addEventListener('mouseenter', () => runCipher(btn));
-});
+/* ══════════════════════════════════════════════
+   CIRCUIT BOARD CANVAS
+══════════════════════════════════════════════ */
+const cvs = document.getElementById('circuit-canvas');
+const ctx = cvs.getContext('2d');
+let W, H, CELL = 46, cols, rows, nodes, traces, pulses, comps;
+const rnd  = (a,b) => a + Math.random()*(b-a);
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const shuf = a => [...a].sort(() => Math.random()-.5);
 
+function pal() {
+  const d = document.documentElement.getAttribute('data-theme')==='dark';
+  return {
+    trace: d?'#2d2720':'#8a7a68',
+    nodeS: d?'#38302a':'#7a6a58',
+    nodeV: d?'#463e36':'#6a5a48',
+    orange:d?'#e87820':'#c06010',
+    rust:  d?'#c95f2a':'#a03010',
+    comp:  d?'#463e36':'#6a5a48',
+  };
+}
+
+function resize() {
+  W = cvs.width  = window.innerWidth;
+  H = cvs.height = window.innerHeight;
+  cols = Math.ceil(W/CELL)+2; rows = Math.ceil(H/CELL)+2;
+  buildCircuit();
+}
+
+function buildCircuit() {
+  nodes=[]; traces=[]; pulses=[]; comps=[];
+  const nm = new Map();
+  for(let c=0;c<cols;c++)
+    for(let r=0;r<rows;r++)
+      if(Math.random()<.21){
+        const n={x:c*CELL,y:r*CELL,isVia:Math.random()<.09,glow:0};
+        nodes.push(n); nm.set(`${c},${r}`,n);
+      }
+  const used = new Set();
+  nodes.forEach(n=>{
+    const c=Math.round(n.x/CELL),r=Math.round(n.y/CELL);
+    let conn=0;
+    for(const [dc,dr] of shuf([[-1,0],[1,0],[0,-1],[0,1]])){
+      if(conn>=Math.floor(rnd(1,3.5))) break;
+      for(let s=1;s<=4;s++){
+        const k=`${c+dc*s},${r+dr*s}`;
+        if(nm.has(k)){
+          const m=nm.get(k), pk=[n.x,n.y,m.x,m.y].sort().join('|');
+          if(!used.has(pk)){
+            used.add(pk);
+            const hf=Math.random()>.5;
+            traces.push({x1:n.x,y1:n.y,ex:hf?m.x:n.x,ey:hf?n.y:m.y,
+              x2:m.x,y2:m.y,progress:0,done:false,sf:Math.random()*.65});
+            conn++;
+          }
+          break;
+        }
+      }
+    }
+  });
+  nodes.filter(n=>n.isVia).forEach(n=>comps.push({x:n.x,y:n.y,type:pick(['ic','cap','res']),op:0}));
+}
+
+function rebuildCircuit() { bootTime=null; buildCircuit(); }
+
+function tpt(t,p){
+  const s1=Math.hypot(t.ex-t.x1,t.ey-t.y1),s2=Math.hypot(t.x2-t.ex,t.y2-t.ey);
+  const tot=(s1+s2)||1,d=p*tot;
+  if(d<=s1){const f=s1?d/s1:0;return{x:t.x1+(t.ex-t.x1)*f,y:t.y1+(t.ey-t.y1)*f};}
+  const f=s2?(d-s1)/s2:0;return{x:t.ex+(t.x2-t.ex)*f,y:t.ey+(t.y2-t.ey)*f};
+}
+
+function drawComp(cx,cy,type,op,col){
+  ctx.save();ctx.globalAlpha=op*.25;ctx.strokeStyle=col;ctx.lineWidth=.9;
+  if(type==='ic'){
+    ctx.strokeRect(cx-13,cy-9,26,18);
+    for(let i=0;i<3;i++){const py=cy-9+3+i*6;
+      ctx.beginPath();ctx.moveTo(cx-18,py);ctx.lineTo(cx-13,py);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx+13,py);ctx.lineTo(cx+18,py);ctx.stroke();}
+  } else if(type==='cap'){
+    ctx.beginPath();ctx.moveTo(cx-8,cy-4);ctx.lineTo(cx+8,cy-4);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx-8,cy+4);ctx.lineTo(cx+8,cy+4);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,cy-9);ctx.lineTo(cx,cy-4);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,cy+4);ctx.lineTo(cx,cy+9);ctx.stroke();
+  } else {
+    ctx.strokeRect(cx-9,cy-3.5,18,7);
+    ctx.beginPath();ctx.moveTo(cx-14,cy);ctx.lineTo(cx-9,cy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx+9,cy);ctx.lineTo(cx+14,cy);ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function flashNear(x,y){
+  let best=null,bd=Infinity;
+  nodes.forEach(n=>{const d=Math.hypot(n.x-x,n.y-y);if(d<bd){bd=d;best=n;}});
+  if(best&&bd<CELL*1.5) best.glow=1;
+}
+
+let bootTime=null; const BOOT_DUR=2600; let lastSpawn=0;
+
+function draw(ts){
+  if(!bootTime) bootTime=ts;
+  const bf=Math.min((ts-bootTime)/BOOT_DUR,1);
+  const C=pal();
+  ctx.clearRect(0,0,W,H);
+
+  traces.forEach(t=>{
+    const lf=Math.max(0,Math.min(1,(bf-t.sf)/(1-t.sf+.001)));
+    t.progress=lf; if(lf>=1)t.done=true; if(lf<=0)return;
+    const s1=Math.hypot(t.ex-t.x1,t.ey-t.y1),s2=Math.hypot(t.x2-t.ex,t.y2-t.ey);
+    const tot=(s1+s2)||1,drawn=lf*tot;
+    ctx.beginPath();ctx.strokeStyle=C.trace;ctx.lineWidth=1.1;ctx.lineCap='square';
+    ctx.moveTo(t.x1,t.y1);
+    if(drawn<=s1){const f=s1?drawn/s1:0;ctx.lineTo(t.x1+(t.ex-t.x1)*f,t.y1+(t.ey-t.y1)*f);}
+    else{ctx.lineTo(t.ex,t.ey);const f=s2?(drawn-s1)/s2:0;ctx.lineTo(t.ex+(t.x2-t.ex)*f,t.ey+(t.y2-t.ey)*f);}
+    ctx.stroke();
+    if(lf<1){const tip=tpt(t,lf);const g=ctx.createRadialGradient(tip.x,tip.y,0,tip.x,tip.y,7);g.addColorStop(0,'rgba(232,120,32,.5)');g.addColorStop(1,'rgba(232,120,32,0)');ctx.beginPath();ctx.arc(tip.x,tip.y,7,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();}
+  });
+
+  nodes.forEach(n=>{
+    const r=n.isVia?4.2:1.8;
+    if(n.glow>0){const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r*7);g.addColorStop(0,`rgba(232,120,32,${n.glow*.65})`);g.addColorStop(1,'rgba(232,120,32,0)');ctx.beginPath();ctx.arc(n.x,n.y,r*7,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();n.glow=Math.max(0,n.glow-.02);}
+    ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
+    ctx.fillStyle=n.glow>.15?C.orange:(n.isVia?C.nodeV:C.nodeS);ctx.fill();
+    if(n.isVia){ctx.beginPath();ctx.arc(n.x,n.y,r+3,0,Math.PI*2);ctx.strokeStyle=C.nodeV;ctx.lineWidth=.75;ctx.stroke();}
+  });
+
+  if(bf>.5) comps.forEach(c=>{c.op=Math.min(1,c.op+.004);drawComp(c.x,c.y,c.type,c.op,C.comp);});
+
+  if(bf>.55&&ts-lastSpawn>155&&pulses.length<22){
+    const ready=traces.filter(t=>t.done);
+    if(ready.length){const t=pick(ready);pulses.push({t,p:0,speed:rnd(.003,.009),color:pick([C.orange,C.rust]),tl:Math.floor(rnd(5,12))});}
+    lastSpawn=ts;
+  }
+  pulses=pulses.filter(p=>p.p<=1.02);
+  pulses.forEach(pu=>{
+    pu.p+=pu.speed;
+    const head=tpt(pu.t,Math.min(pu.p,1));
+    for(let i=pu.tl;i>=0;i--){const p=tpt(pu.t,Math.max(0,pu.p-i*.016));ctx.globalAlpha=((pu.tl-i)/pu.tl)*.6;ctx.beginPath();ctx.arc(p.x,p.y,Math.max(.3,2.1-i*.1),0,Math.PI*2);ctx.fillStyle=pu.color;ctx.fill();}
+    ctx.globalAlpha=1;
+    const hg=ctx.createRadialGradient(head.x,head.y,0,head.x,head.y,9);hg.addColorStop(0,pu.color+'a0');hg.addColorStop(1,pu.color+'00');ctx.beginPath();ctx.arc(head.x,head.y,9,0,Math.PI*2);ctx.fillStyle=hg;ctx.fill();
+    ctx.beginPath();ctx.arc(head.x,head.y,2,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+    if(pu.p>=.95) flashNear(pu.t.x2,pu.t.y2);
+  });
+
+  const sy=(ts*.03)%H;
+  const sg=ctx.createLinearGradient(0,sy-40,0,sy+40);sg.addColorStop(0,'rgba(232,120,32,0)');sg.addColorStop(.5,'rgba(232,120,32,.009)');sg.addColorStop(1,'rgba(232,120,32,0)');
+  ctx.fillStyle=sg;ctx.fillRect(0,Math.max(0,sy-40),W,80);
+
+  requestAnimationFrame(draw);
+}
+resize();
+window.addEventListener('resize', resize);
+requestAnimationFrame(draw);
 
 /* ══════════════════════════════════════════════
-   TELEMETRY HUD WIDGETS
+   TELEMETRY HUD
 ══════════════════════════════════════════════ */
+// Fade on move
 const hud = document.getElementById('status-hud');
 let moveTimer;
-document.addEventListener('mousemove', (e) => {
+document.addEventListener('mousemove', e => {
   hud.classList.add('moving');
   clearTimeout(moveTimer);
-  moveTimer = setTimeout(() => hud.classList.remove('moving'), 1000);
+  moveTimer = setTimeout(() => hud.classList.remove('moving'), 1100);
 
-  // Widget 3: G-Force Crosshair logic
+  // G-Force crosshair
   const dot = document.getElementById('g-dot');
   const val = document.getElementById('g-val');
-  const x = ((e.clientX / window.innerWidth) * 2 - 1).toFixed(2);
-  const y = ((e.clientY / window.innerHeight) * 2 - 1).toFixed(2);
-  dot.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
-  val.innerText = `X:${x} Y:${y}`;
+  const gx = ((e.clientX / window.innerWidth)  * 2 - 1);
+  const gy = ((e.clientY / window.innerHeight) * 2 - 1);
+  dot.style.transform = `translate(${(gx * 10).toFixed(1)}px, ${(gy * 10).toFixed(1)}px)`;
+  val.innerHTML = `X: ${gx.toFixed(2)}<br>Y: ${gy.toFixed(2)}`;
 });
 
-// Widget 1: CAN Bus scrolling Hex
-const canTerm = document.getElementById('hud-can');
+// CAN Bus scrolling hex
+const canEl = document.getElementById('hud-can');
 setInterval(() => {
-  let hexStr = '';
-  for(let i=0; i<4; i++) hexStr += Math.floor(Math.random()*255).toString(16).padStart(2,'0').toUpperCase() + ' ';
-  canTerm.innerText = '0x' + Math.floor(Math.random()*4095).toString(16).toUpperCase() + '  ' + hexStr;
-}, 120);
+  const id  = Math.floor(Math.random()*0xFFF).toString(16).toUpperCase().padStart(3,'0');
+  const bytes = Array.from({length:4}, () =>
+    Math.floor(Math.random()*0xFF).toString(16).toUpperCase().padStart(2,'0')
+  ).join(' ');
+  canEl.textContent = `0x${id}  ${bytes}`;
+}, 110);
 
-// Widget 2: PID Step Response Canvas
-const pidCvs = document.getElementById('pid-canvas');
-const pctx = pidCvs.getContext('2d');
-let time = 0;
+// PID Step Response
+const pidEl  = document.getElementById('pid-canvas');
+const pctx   = pidEl.getContext('2d');
+let pidTime  = 0;
+
 function drawPID() {
-  pidCvs.width = pidCvs.parentElement.clientWidth;
-  pctx.clearRect(0,0, pidCvs.width, 24);
-  
-  // Target Line
-  pctx.strokeStyle = 'rgba(232,120,32,0.3)';
-  pctx.setLineDash([2, 2]);
-  pctx.beginPath(); pctx.moveTo(0, 8); pctx.lineTo(pidCvs.width, 8); pctx.stroke();
+  const W2 = pidEl.parentElement.clientWidth - 16;
+  const H2 = 28;
+  pidEl.width  = W2;
+  pidEl.height = H2;
 
-  // Draw simulated damped oscillation curve
-  pctx.strokeStyle = '#4caf7d';
-  pctx.setLineDash([]);
+  pctx.clearRect(0, 0, W2, H2);
+
+  // Setpoint dashed line
+  pctx.strokeStyle = 'rgba(232,120,32,.28)';
+  pctx.setLineDash([2,3]);
+  pctx.lineWidth = 1;
   pctx.beginPath();
-  for(let i=0; i<pidCvs.width; i++) {
-    const t = (i + time) * 0.05;
-    // Step response math: 1 - e^(-at) * cos(bt)
-    const y = 8 + Math.exp(-t * 0.15) * Math.cos(t * 1.2) * 14;
-    if(i===0) pctx.moveTo(i, y); else pctx.lineTo(i, y);
+  pctx.moveTo(0, H2 * .25);
+  pctx.lineTo(W2, H2 * .25);
+  pctx.stroke();
+  pctx.setLineDash([]);
+
+  // Damped step response curve
+  pctx.strokeStyle = '#4caf7d';
+  pctx.lineWidth = 1.2;
+  pctx.beginPath();
+  for (let i = 0; i < W2; i++) {
+    const t = (i + pidTime) * 0.06;
+    const y = H2 * .25 + Math.exp(-t * .18) * Math.cos(t * 1.3) * (H2 * .55);
+    i === 0 ? pctx.moveTo(i, y) : pctx.lineTo(i, y);
   }
   pctx.stroke();
-  time += 1;
+  pidTime += 1;
   requestAnimationFrame(drawPID);
 }
 drawPID();
 
-/* SCROLL REVEAL */
-const revObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});
-},{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+/* ══════════════════════════════════════════════
+   TICKER
+══════════════════════════════════════════════ */
+const tickItems = [
+  'PID Control','SolidWorks','Fusion 360','Arduino C','C++','Motor Drivers',
+  'Optical Sensors','CAN Bus','PWM Signals','Driveline Engineering',
+  'Formula Electric','Torque Vectoring','Regenerative Braking',
+  'Embedded Systems','Interrupt Handling','CAD & GD&T','System Integration'
+];
 
+/* ══════════════════════════════════════════════
+   TYPEWRITER  (hero eyebrow)
+══════════════════════════════════════════════ */
+const eyEl   = document.getElementById('eyebrow-text');
+const eyFull = 'Mechatronics Engineering · University of Waterloo';
+let ti = 0;
+setTimeout(() => {
+  const iv = setInterval(() => {
+    eyEl.textContent = eyFull.slice(0, ++ti);
+    if (ti >= eyFull.length) clearInterval(iv);
+  }, 32);
+}, 300);
+
+/* ══════════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════════ */
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); }
+  });
+}, { threshold: .08 });
+document.querySelectorAll('.reveal').forEach((el,i) => {
+  el.style.transitionDelay = (i%4)*60+'ms';
+  revObs.observe(el);
+});
+
+// Active nav link
+const navAs  = document.querySelectorAll('.nav-links a');
+const navMap = {};
+navAs.forEach(a => { navMap[a.getAttribute('href').slice(1)] = a; });
+const nvObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navAs.forEach(a => a.classList.remove('active'));
+      const l = navMap[e.target.id]; if (l) l.classList.add('active');
+    }
+  });
+}, { rootMargin: '-38% 0px -58% 0px' });
+document.querySelectorAll('section[id]').forEach(s => nvObs.observe(s));
+
+/* ══════════════════════════════════════════════
+   EASTER EGG
+══════════════════════════════════════════════ */
+const eggObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.getElementById('egg-prompt').classList.add('visible');
+      eggObs.unobserve(e.target);
+    }
+  });
+}, { threshold: .2 });
+eggObs.observe(document.getElementById('easter-egg'));
+
+function revealEgg() {
+  document.getElementById('egg-prompt').style.display = 'none';
+  const ff = document.getElementById('fun-facts');
+  ff.classList.add('shown');
+  ['ff1','ff2'].forEach((id,i) => {
+    setTimeout(() => document.getElementById(id).classList.add('pop'), i*230+60);
+  });
+}
 </script>
 </body>
 </html>
