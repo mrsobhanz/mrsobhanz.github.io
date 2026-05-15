@@ -222,7 +222,24 @@ hr.rule { border: none; border-top: 1px solid var(--border); margin: 0; position
    HERO
 ══════════════════════════════════════════ */
 #hero { min-height: calc(100vh - var(--nav-h)); display: flex; flex-direction: column; justify-content: center; padding-top: var(--s16); padding-bottom: var(--s20); }
-.hero-coord { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--faint); letter-spacing: .12em; margin-bottom: var(--s10); opacity: 0; animation: fadeUp var(--slow) var(--ease) .05s forwards; }
+.hero-coord {
+  display: inline-block;
+  text-decoration: none;
+  font-family: var(--f-mono); 
+  font-size: var(--t-xs); 
+  color: var(--orange); 
+  text-shadow: 0 0 12px var(--orange-mid);
+  letter-spacing: .12em; 
+  margin-bottom: var(--s10); 
+  opacity: 0; 
+  animation: fadeUp var(--slow) var(--ease) .05s forwards;
+  transition: color var(--fast), text-shadow var(--fast), transform var(--fast);
+}
+.hero-coord:hover {
+  color: var(--orange-hi);
+  text-shadow: 0 0 16px var(--orange), 0 0 32px var(--orange);
+  transform: translateY(-2px);
+}
 .hero-kicker { display: flex; align-items: center; gap: var(--s3); font-family: var(--f-mono); font-size: var(--t-xs); color: var(--orange); letter-spacing: .18em; text-transform: uppercase; margin-bottom: var(--s5); opacity: 0; animation: fadeUp var(--slow) var(--ease) .2s forwards; }
 .kicker-rule { width: 20px; height: 1px; background: var(--orange); flex-shrink: 0; }
 h1 { font-family: var(--f-serif); font-weight: 400; font-size: clamp(3.6rem, 9.5vw, 6.5rem); line-height: .98; letter-spacing: -.03em; color: var(--ink); opacity: 0; animation: fadeUp var(--slow) var(--ease) .34s forwards; }
@@ -547,7 +564,7 @@ footer { background: var(--bg); border-top: 1px solid var(--border); padding: va
 <!-- HERO -->
 <section id="hero">
   <div class="inner">
-    <p class="hero-coord">43.4731° N · 80.5395° W</p>
+    <a href="https://maps.google.com/?q=43.4731,-80.5395" target="_blank" rel="noopener" class="hero-coord">43.4731° N · 80.5395° W</a>
     <p class="hero-kicker">
       <span class="kicker-rule"></span>
       <span id="eyebrow-text"></span>
