@@ -5,23 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Sobhan Zare — Mechatronics Engineering student at the University of Waterloo. Building at the intersection of hardware, software, and control systems.">
 <title>Sobhan's Portfolio</title>
-
 <!-- Favicons from original repository -->
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-
 <style>
-/* ══════════════════════════════════════════
-   DESIGN TOKENS & THEMING
-   ══════════════════════════════════════════ */
 :root {
   --t-xs:   0.694rem;
   --t-sm:   0.833rem;
@@ -30,20 +24,19 @@
   --t-xl:   1.44rem;
   --t-2xl:  1.728rem;
   --t-3xl:  2.074rem;
-  
   --s1: .25rem;  --s2: .5rem;   --s3: .75rem;
   --s4: 1rem;    --s5: 1.25rem; --s6: 1.5rem;
   --s8: 2rem;    --s10: 2.5rem; --s12: 3rem;
   --s16: 4rem;   --s20: 5rem;   --s24: 6rem;
-  
   --r-xs: 3px; --r-sm: 5px; --r: 8px; --r-pill: 999px;
-  
   --ease:     cubic-bezier(.25,.46,.45,.94);
   --ease-out: cubic-bezier(.16,1,.3,1);
   --fast: 140ms; --med: 240ms; --slow: 460ms;
   --nav-h: 60px; --max-w: 760px; --px: 2rem;
+  --f-sans:  'DM Sans', system-ui, sans-serif;
+  --f-mono:  'DM Mono', 'Courier New', monospace;
+  --f-serif: 'DM Serif Display', Georgia, serif;
 }
-
 [data-theme="dark"] {
   --bg: #0c0b0a;
   --bg-r: #131110;
@@ -66,7 +59,6 @@
   --term-green-lo: rgba(0, 255, 102, 0.08);
   color-scheme: dark;
 }
-
 [data-theme="light"] {
   --bg: #faf6f0;
   --bg-r: #f2ebe0;
@@ -89,10 +81,6 @@
   --term-green-lo: rgba(10, 143, 42, 0.08);
   color-scheme: light;
 }
-
-/* ══════════════════════════════════════════
-   GLOBAL BASE STYLING
-   ══════════════════════════════════════════ */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html {
   scroll-behavior: smooth;
@@ -112,8 +100,6 @@ body {
   transition: background var(--med) var(--ease), color var(--med) var(--ease);
 }
 @media (pointer: coarse) { body { cursor: auto; } }
-
-/* Scanline overlay (Hacker Terminal feel) */
 body::after {
   content: '';
   position: fixed;
@@ -137,13 +123,8 @@ body::after {
     transparent 3px
   );
 }
-
 a, button { cursor: none; }
 @media (pointer: coarse) { a, button { cursor: auto; } }
-
-/* ══════════════════════════════════════════
-   RETICLE CURSOR
-   ══════════════════════════════════════════ */
 #reticle {
   position: fixed; top: 0; left: 0; width: 40px; height: 40px;
   pointer-events: none; z-index: 9999;
@@ -153,16 +134,10 @@ a, button { cursor: none; }
 #reticle svg { width: 100%; height: 100%; overflow: visible; }
 body.hov #reticle { width: 54px; height: 54px; margin-left: -27px; margin-top: -27px; }
 @media (pointer: coarse) { #reticle { display: none; } }
-
-/* ══════════════════════════════════════════
-   BACKGROUND CANVAS (CIRCUIT SCHEMATIC)
-   ══════════════════════════════════════════ */
 #circuit-canvas {
   position: fixed; inset: 0; z-index: 0; pointer-events: none; transition: opacity var(--slow);
 }
 [data-theme="light"] #circuit-canvas { opacity: .35; }
-
-/* Telemetry HUD pills */
 #status-hud {
   position: fixed; bottom: var(--s5); right: var(--s5);
   z-index: 50; pointer-events: none;
@@ -180,8 +155,6 @@ body.hov #reticle { width: 54px; height: 54px; margin-left: -27px; margin-top: -
 .hud-pill-key { font-family: var(--f-mono); font-size: 7.5px; color: rgba(244,50,11,.65); letter-spacing: .12em; text-transform: uppercase; }
 .hud-pill-val { font-family: var(--f-mono); font-size: 10.5px; color: var(--orange); letter-spacing: .03em; min-width: 42px; text-align: right; }
 .hud-live-dot { width: 4.5px; height: 4.5px; border-radius: 50%; background: var(--green); flex-shrink: 0; box-shadow: 0 0 4px var(--green); animation: livePulse 2.4s ease-in-out infinite; }
-
-/* Floating annotations */
 .ann {
   position: fixed; right: 0; font-family: var(--f-mono); font-size: 9px;
   color: var(--orange); letter-spacing: .07em; white-space: nowrap; pointer-events: none; z-index: 2;
@@ -196,10 +169,6 @@ body.hov #reticle { width: 54px; height: 54px; margin-left: -27px; margin-top: -
 .ann-3 { top: 54%; animation-delay: 0.5s; }
 .ann-4 { top: 70%; animation-delay: 4.9s; }
 @keyframes annSlide { 0%,100%{opacity:0;transform:translateX(14px)} 12%,88%{opacity:.88;transform:translateX(0)} }
-
-/* ══════════════════════════════════════════
-   BOOT DIAGNOSTICS OVERLAY (PREMIUM FADE)
-   ══════════════════════════════════════════ */
 #boot-overlay {
   position: fixed;
   inset: 0;
@@ -219,7 +188,6 @@ body.hov #reticle { width: 54px; height: 54px; margin-left: -27px; margin-top: -
   opacity: 0;
   visibility: hidden;
 }
-
 .boot-top {
   display: flex;
   justify-content: space-between;
@@ -229,7 +197,6 @@ body.hov #reticle { width: 54px; height: 54px; margin-left: -27px; margin-top: -
 }
 .boot-title { font-weight: bold; font-size: 14px; letter-spacing: 0.1em; }
 .boot-ver { opacity: 0.6; font-size: 11px; }
-
 .boot-middle {
   flex-grow: 1;
   display: grid;
@@ -243,7 +210,6 @@ body.hov #reticle { width: 54px; height: 54px; margin-left: -27px; margin-top: -
   .boot-middle { grid-template-columns: 1fr; }
   .boot-graphic-panel { display: none !important; }
 }
-
 .boot-console {
   display: flex;
   flex-direction: column;
@@ -262,7 +228,6 @@ body.hov #reticle { width: 54px; height: 54px; margin-left: -27px; margin-top: -
   transform: translateY(0);
 }
 .console-line .ok { color: var(--term-green); }
-
 .boot-graphic-panel {
   display: flex;
   flex-direction: column;
@@ -306,10 +271,6 @@ body.hov #reticle { width: 54px; height: 54px; margin-left: -27px; margin-top: -
   justify-content: space-between;
   font-size: 11px;
 }
-
-/* ══════════════════════════════════════════
-   NAVIGATION
-   ══════════════════════════════════════════ */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: var(--nav-h);
   display: flex; align-items: center; justify-content: space-between; padding: 0 var(--s10);
@@ -326,7 +287,6 @@ nav {
   opacity: 0; animation: fadeDown var(--med) var(--ease) .05s forwards;
 }
 .logo-wordmark em { font-style: normal; color: var(--orange); }
-
 .nav-links { list-style: none; display: flex; gap: var(--s8); position: absolute; left: 50%; transform: translateX(-50%); }
 .nav-links li { opacity: 0; animation: fadeDown var(--med) var(--ease) forwards; }
 .nav-links li:nth-child(1){animation-delay:.08s} .nav-links li:nth-child(2){animation-delay:.14s}
@@ -340,8 +300,6 @@ nav {
 .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--orange); transition: width var(--med) var(--ease); }
 .nav-links a:hover, .nav-links a.active { color: var(--ink); }
 .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-
-/* Dropdown theme switcher from original */
 .nav-right { flex-shrink: 0; opacity: 0; animation: fadeDown var(--med) var(--ease) .38s forwards; }
 .theme-wrap { position: relative; }
 .theme-btn {
@@ -373,19 +331,11 @@ nav {
 .theme-opt + .theme-opt { border-top: 1px solid var(--border); }
 .theme-opt:hover, .theme-opt:focus-visible { background: var(--surface); color: var(--ink); }
 .theme-opt.active { color: var(--orange); }
-
-/* ══════════════════════════════════════════
-   PAGE SKELETON
-   ══════════════════════════════════════════ */
 main { padding-top: var(--nav-h); position: relative; z-index: 1; }
 .inner { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--px); }
 section { padding-top: var(--s24); padding-bottom: var(--s24); }
 section:not(#hero) { background: var(--bg); transition: background var(--med); }
 hr.rule { border: none; border-top: 1px solid var(--border); margin: 0; position: relative; z-index: 1; }
-
-/* ══════════════════════════════════════════
-   HERO
-   ══════════════════════════════════════════ */
 #hero { min-height: calc(100vh - var(--nav-h)); display: flex; flex-direction: column; justify-content: center; padding-top: var(--s16); padding-bottom: var(--s20); }
 .hero-coord {
   display: inline-block;
@@ -424,10 +374,6 @@ h1 em { font-style: italic; color: var(--orange); }
 .status-pill { display: inline-flex; align-items: center; gap: var(--s2); margin-top: var(--s6); padding: var(--s1) var(--s3); background: var(--orange-lo); border: 1px solid rgba(244,50,11,.16); border-radius: var(--r-pill); font-family: var(--f-mono); font-size: var(--t-xs); color: var(--orange); letter-spacing: .1em; text-transform: uppercase; width: fit-content; opacity: 0; animation: fadeUp var(--slow) var(--ease) .84s forwards; }
 .live-dot { width: 6px; height: 6px; flex-shrink: 0; background: var(--green); border-radius: 50%; box-shadow: 0 0 5px var(--green); animation: livePulse 2.4s ease-in-out infinite; }
 @keyframes livePulse { 0%,100%{opacity:1} 50%{opacity:.2} }
-
-/* ══════════════════════════════════════════
-   TICKER
-   ══════════════════════════════════════════ */
 .ticker-wrap { background: var(--bg-r); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: .625rem 0; overflow: hidden; position: relative; z-index: 2; transition: background var(--med); }
 .ticker-track { display: flex; gap: var(--s10); white-space: nowrap; width: max-content; animation: tickerRun 40s linear infinite; }
 .ticker-track span { display: flex; align-items: center; gap: var(--s3); font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
@@ -435,19 +381,11 @@ h1 em { font-style: italic; color: var(--orange); }
 [data-theme="light"] .ticker-wrap { background: var(--surface); border-color: var(--border); }
 .ticker-track span::before { content: '⚙'; color: var(--orange); font-size: 8px; }
 @keyframes tickerRun { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-/* ══════════════════════════════════════════
-   SECTION LABELS + HEADINGS
-   ══════════════════════════════════════════ */
 .label { display: flex; align-items: center; gap: var(--s2); font-family: var(--f-mono); font-size: var(--t-xs); color: var(--orange); letter-spacing: .16em; text-transform: uppercase; margin-bottom: var(--s2); }
 .label::before { content: ''; width: 12px; height: 1px; background: var(--orange); }
 [data-theme="light"] .label { font-weight: 500; }
 h2 { font-family: var(--f-serif); font-weight: 400; font-size: var(--t-3xl); line-height: 1.1; letter-spacing: -.02em; color: var(--ink); margin-bottom: var(--s10); }
-
-/* Cipher effect — heading glows orange while scrambling */
 h2.cipher-active { color: var(--orange); }
-
-/* HUD layout styling for diagnostics sandbox */
 .hud-box {
   background: var(--card);
   border: 1px solid var(--border);
@@ -481,10 +419,6 @@ h2.cipher-active { color: var(--orange); }
   color: var(--orange);
   opacity: 0.6;
 }
-
-/* ══════════════════════════════════════════
-   ABOUT
-   ══════════════════════════════════════════ */
 .about-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: var(--s12); align-items: start; }
 .about-prose { font-size: .9375rem; color: var(--muted); line-height: 1.82; letter-spacing: .012em; }
 .about-prose p + p { margin-top: var(--s4); }
@@ -496,10 +430,6 @@ h2.cipher-active { color: var(--orange); }
 .fact:hover::before { transform: scaleY(1); }
 .fact-label { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-bottom: var(--s1); }
 .fact-value { font-size: var(--t-sm); color: var(--ink); letter-spacing: .01em; }
-
-/* ══════════════════════════════════════════
-   EXPERIENCE
-   ══════════════════════════════════════════ */
 .timeline { display: flex; flex-direction: column; }
 .timeline-item { display: grid; grid-template-columns: 100px 1fr; gap: var(--s8); padding: var(--s8) 0; border-bottom: 1px solid var(--border); position: relative; }
 .timeline-item:first-child { padding-top: var(--s2); }
@@ -516,10 +446,6 @@ a.exp-org:hover { color: var(--orange-hi); }
 .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: var(--s1); }
 .exp-bullets li { font-size: var(--t-sm); color: var(--muted); padding-left: var(--s4); position: relative; line-height: 1.68; letter-spacing: .01em; }
 .exp-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--faint); font-size: 10px; top: 5px; }
-
-/* ══════════════════════════════════════════
-   PROJECTS
-   ══════════════════════════════════════════ */
 .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
 .project-card { display: flex; flex-direction: column; gap: var(--s3); padding: var(--s5); background: var(--card); border: 1px solid var(--border); border-radius: var(--r); text-decoration: none; color: inherit; position: relative; overflow: hidden; transition: border-color var(--fast) var(--ease), transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease); }
 .project-card::before { content: ''; position: absolute; inset: 0; border-radius: var(--r); background: var(--orange-lo); opacity: 0; transition: opacity var(--med); pointer-events: none; }
@@ -539,10 +465,6 @@ a.exp-org:hover { color: var(--orange-hi); }
 .tag { font-family: var(--f-mono); font-size: 8.5px; letter-spacing: .05em; padding: 2px 7px; border-radius: var(--r-xs); background: var(--surface); color: var(--muted); border: 1px solid var(--border); transition: background var(--fast), color var(--fast), border-color var(--fast); }
 .project-card:hover .tag { background: var(--orange-lo); color: var(--orange); border-color: rgba(244,50,11,.2); }
 .project-award { display: inline-flex; align-items: center; gap: 4px; font-family: var(--f-mono); font-size: 8.5px; letter-spacing: .05em; color: var(--orange); background: var(--orange-lo); border: 1px solid rgba(244,50,11,.2); border-radius: var(--r-xs); padding: 2px 7px; width: fit-content; }
-
-/* ══════════════════════════════════════════
-   SKILLS
-   ══════════════════════════════════════════ */
 .skills-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--s4); }
 @media (max-width: 600px) { .skills-grid { grid-template-columns: 1fr; } }
 .skill-group { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: var(--s5); transition: transform var(--fast) var(--ease), border-color var(--fast), box-shadow var(--fast); }
@@ -556,14 +478,9 @@ a.exp-org:hover { color: var(--orange-hi); }
 .skill-bar { height: 2px; background: var(--border); border-radius: 2px; margin-top: var(--s4); overflow: hidden; }
 .skill-bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--orange), rgba(244,50,11,.3)); border-radius: 2px; transition: width 1.2s var(--ease-out); }
 .skill-group.in-view .skill-bar-fill { width: var(--fill, 70%); }
-
 .cert-row { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s6); }
 .cert { display: inline-flex; align-items: center; gap: var(--s2); font-size: var(--t-sm); color: var(--orange); background: var(--orange-lo); border: 1px solid rgba(244,50,11,.18); border-radius: var(--r-sm); padding: var(--s2) var(--s3); transition: transform var(--fast) var(--ease); }
 .cert:hover { transform: translateY(-2px); }
-
-/* ══════════════════════════════════════════
-   SYSTEM DIAGNOSTICS & TELEMETRY (NEW INLINE WIDGET)
-   ══════════════════════════════════════════ */
 .diagnostics-panel {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -623,7 +540,6 @@ a.exp-org:hover { color: var(--orange-hi); }
 }
 .slider-row span { text-align: right; color: var(--ink-2); }
 .slider-row span:first-child { text-align: left; color: var(--orange); font-weight: bold; }
-
 .status-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -654,10 +570,6 @@ a.exp-org:hover { color: var(--orange-hi); }
   line-height: 1.4;
   color: var(--term-green);
 }
-
-/* ══════════════════════════════════════════
-   EASTER EGG DECRYPTION STATION
-   ══════════════════════════════════════════ */
 .egg-prompt {
   display: flex;
   flex-direction: column;
@@ -677,7 +589,6 @@ a.exp-org:hover { color: var(--orange-hi); }
 }
 .egg-btn:hover { border-color: var(--orange); color: var(--orange); }
 .egg-btn:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
-
 .decrypt-controls {
   display: flex;
   gap: 10px;
@@ -710,13 +621,11 @@ a.exp-org:hover { color: var(--orange-hi); }
   transition: background var(--fast);
 }
 .decrypt-btn:hover { background: var(--orange-hi); }
-
 .car-strip { width: 100%; height: 56px; position: relative; overflow: hidden; margin: var(--s6) 0 var(--s4); }
 .road-dashes { position: absolute; bottom: 9px; left: 0; right: 0; height: 1px; background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 14px, transparent 14px, transparent 28px); }
 #car-svg { position: absolute; bottom: 2px; left: -160px; }
 #car-svg.run { animation: drive 8s linear infinite; }
 @keyframes drive { from{left:-160px} to{left:calc(100% + 24px)} }
-
 .fun-facts { display: none; flex-direction: column; gap: var(--s3); margin-top: var(--s5); width: 100%; }
 .fun-fact {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: var(--s4) var(--s5);
@@ -737,10 +646,6 @@ a.exp-org:hover { color: var(--orange-hi); }
   line-height: 1.4;
   margin-top: 10px;
 }
-
-/* ══════════════════════════════════════════
-   CONTACT
-   ══════════════════════════════════════════ */
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); }
 @media (max-width: 600px) { .contact-grid { grid-template-columns: 1fr; } }
 .contact-card { display: flex; align-items: center; gap: var(--s3); padding: var(--s4) var(--s5); background: var(--card); border: 1px solid var(--border); border-radius: var(--r); text-decoration: none; color: var(--ink); transition: border-color var(--fast) var(--ease), transform var(--fast) var(--ease), box-shadow var(--fast), background var(--med); }
@@ -752,10 +657,6 @@ a.exp-org:hover { color: var(--orange-hi); }
 .contact-card:hover .contact-icon { background: var(--orange-lo); border-color: rgba(244,50,11,.28); }
 .contact-label { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
 .contact-value { font-size: var(--t-sm); color: var(--ink); font-weight: 500; margin-top: 2px; letter-spacing: .01em; }
-
-/* ══════════════════════════════════════════
-   RESUME
-   ══════════════════════════════════════════ */
 #resume { background: var(--bg); position: relative; z-index: 1; transition: background var(--med); }
 #resume .inner { padding-top: var(--s16); padding-bottom: var(--s16); display: flex; flex-direction: column; gap: var(--s8); }
 .resume-row { display: flex; align-items: center; justify-content: space-between; gap: var(--s8); flex-wrap: wrap; }
@@ -778,10 +679,6 @@ a.exp-org:hover { color: var(--orange-hi); }
   transform: translateY(-1px);
 }
 .resume-download:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
-
-/* ══════════════════════════════════════════
-   FOOTER
-   ══════════════════════════════════════════ */
 footer {
   background: var(--bg); border-top: 1px solid var(--border); padding: var(--s6) var(--s8);
   display: flex; justify-content: space-between; align-items: center;
@@ -790,16 +687,10 @@ footer {
 }
 @media (max-width: 600px) { footer { flex-direction: column; gap: 8px; text-align: center; } }
 .footer-uptime { font-size: 10px; color: var(--orange); }
-
-/* ══════════════════════════════════════════
-   SCROLL REVEAL ANIMATIONS
-   ══════════════════════════════════════════ */
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity .55s var(--ease-out), transform .55s var(--ease-out); }
 .reveal.visible { opacity: 1; transform: translateY(0); }
-
 @keyframes fadeUp   { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 @keyframes fadeDown { from{opacity:0;transform:translateY(-5px)} to{opacity:1;transform:translateY(0)} }
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .ticker-track { animation: none !important; }
@@ -809,8 +700,6 @@ footer {
 </style>
 </head>
 <body>
-
-<!-- Reticle Cursor from original -->
 <div id="reticle" aria-hidden="true">
   <svg viewBox="-26 -26 52 52" xmlns="http://www.w3.org/2000/svg">
     <g id="ret-spin">
@@ -835,17 +724,11 @@ footer {
     <path d="M-11,23  L-23,23  L-23,11"  stroke="#f4320b" stroke-width=".7" fill="none" opacity=".35"/>
   </svg>
 </div>
-
-<!-- Circuit trace background -->
 <canvas id="circuit-canvas"></canvas>
-
-<!-- Side annotations -->
 <span class="ann ann-1">PID_GAIN = 0.82</span>
 <span class="ann ann-2">motor.setPWM(duty)</span>
 <span class="ann ann-3">encoder.read()</span>
 <span class="ann ann-4">throttle = 0.74</span>
-
-<!-- Status HUD (bottom right pill) -->
 <div id="status-hud">
   <div class="hud-pill">
     <span class="hud-pill-key">RPM</span>
@@ -857,21 +740,14 @@ footer {
     <span class="hud-pill-val" id="hud-duty">0.74</span>
   </div>
 </div>
-
-<!-- ══════════════════════════════════════════
-     BOOT SCREEN DIAGNOSTIC OVERLAY
-     ══════════════════════════════════════════ -->
 <div id="boot-overlay">
   <div class="boot-top">
     <div class="boot-title">SYS_KERNEL: WATERLOO_TRON_V2.0</div>
     <div class="boot-ver">BOOT_LOADER // BUILD 8F9C</div>
   </div>
-  
   <div class="boot-middle">
     <div class="boot-console" id="boot-console">
-      <!-- Lines populated by Javascript -->
     </div>
-    
     <div class="boot-graphic-panel">
       <div class="boot-loader-ring">
         <svg class="boot-ring-svg" viewBox="0 0 160 160">
@@ -883,17 +759,12 @@ footer {
       <canvas class="boot-calibration-graph" id="boot-calibration-canvas"></canvas>
     </div>
   </div>
-  
   <div class="boot-footer">
     <div>ADDR: 0x00A4 // IRQ 0x12</div>
     <div>HOST: sobhanz.com</div>
     <div>SYSTEM STATS: OK</div>
   </div>
 </div>
-
-<!-- ══════════════════════════════════════════
-     HEADER / NAVIGATION
-     ══════════════════════════════════════════ -->
 <nav>
   <a href="#hero" class="nav-logo">
     <img class="logo-svg" src="favicon.svg" alt="Logo">
@@ -906,8 +777,6 @@ footer {
     <li><a href="#skills">Skills</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  
-  <!-- Theme selector dropdown -->
   <div class="nav-right">
     <div class="theme-wrap" id="themeWrap">
       <button class="theme-btn" id="themeBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Select color theme">
@@ -925,13 +794,7 @@ footer {
     </div>
   </div>
 </nav>
-
-<!-- ══════════════════════════════════════════
-     MAIN WEBSITE BODY (CENTERED FLOW)
-     ══════════════════════════════════════════ -->
 <main>
-  
-  <!-- HERO SECTION -->
   <section id="hero">
     <div class="inner">
       <a href="https://maps.google.com/?q=43.4731,-80.5395" target="_blank" rel="noopener" class="hero-coord">43.4731° N · 80.5395° W</a>
@@ -959,22 +822,16 @@ footer {
       </div>
     </div>
   </section>
-  
-  <!-- INTERACTIVE SCROLLING TICKER -->
   <div class="ticker-wrap">
     <div class="ticker-track" id="ticker-track"></div>
   </div>
-  
   <hr class="rule">
-  
-  <!-- ABOUT SECTION -->
   <section id="about">
     <div class="inner">
       <div class="reveal">
         <p class="label">About</p>
         <h2 class="cipher" data-text="Who I am">Who I am</h2>
       </div>
-      
       <div class="about-grid reveal">
         <div class="about-prose">
           <p>I'm a Mechatronics Engineering student at the University of Waterloo, passionate about building systems at the intersection of mechanical design, electronics, and software.</p>
@@ -1002,17 +859,13 @@ footer {
       </div>
     </div>
   </section>
-  
   <hr class="rule">
-  
-  <!-- EXPERIENCE SECTION -->
   <section id="experience">
     <div class="inner">
       <div class="reveal">
         <p class="label">Experience</p>
         <h2 class="cipher" data-text="Where I've worked">Where I've worked</h2>
       </div>
-      
       <div class="timeline">
         <div class="timeline-item reveal">
           <div>
@@ -1029,7 +882,6 @@ footer {
             </ul>
           </div>
         </div>
-        
         <div class="timeline-item reveal">
           <div>
             <div class="exp-date">Oct 2023<br>Jan 2024</div>
@@ -1045,7 +897,6 @@ footer {
             </ul>
           </div>
         </div>
-        
         <div class="timeline-item reveal">
           <div>
             <div class="exp-date">Oct 2022<br>Aug 2023</div>
@@ -1063,17 +914,13 @@ footer {
       </div>
     </div>
   </section>
-  
   <hr class="rule">
-  
-  <!-- PROJECTS SECTION -->
   <section id="projects">
     <div class="inner">
       <div class="reveal">
         <p class="label">Projects</p>
         <h2 class="cipher" data-text="Things I've built">Things I've built</h2>
       </div>
-      
       <div class="projects-grid">
         <a class="project-card featured reveal" href="https://drive.google.com/drive/folders/1v6PohkRCOrPPpIKXrYFrlvJYWfryb5s1?usp=sharing" target="_blank" rel="noopener">
           <div class="project-icon">🃏</div>
@@ -1087,7 +934,6 @@ footer {
             <span class="tag">Embedded Systems</span>
           </div>
         </a>
-        
         <a class="project-card reveal" href="https://www.sumobot.ca/competition?rules=Beginner" target="_blank" rel="noopener">
           <div class="project-icon">🤖</div>
           <div class="project-name">Robotics Club — SUMO Bot ↗</div>
@@ -1100,900 +946,709 @@ footer {
             <span class="tag">Robotics</span>
           </div>
         </a>
-        
-        <a class="project-card reveal" href="https://github.com/mrsobhanz" target="_blank" rel="noopener">
-          <div class="project-icon">👾</div>
-          <div class="project-name">Game Development ↗</div>
-          <div class="project-desc">Designed and programmed multiple interactive games such as Wordle, Flappy Bird, and more in Java and C++. Collision detection, word validation, input handling, and runtime efficiency.</div>
+        <a class="project-card reveal" href="https://github.com/Sobhanz/autonomous-chess-robot" target="_blank" rel="noopener">
+          <div class="project-icon">♟️</div>
+          <div class="project-name">Autonomous Chess-Playing Robot ↗</div>
+          <div class="project-desc">Built a SCARA robotic arm that uses computer vision to track chess pieces and play against a human opponent. Realized physical chessboard coordination using Inverse Kinematics.</div>
           <div class="project-tags">
-            <span class="tag">Java</span>
-            <span class="tag">C++</span>
-            <span class="tag">Algorithms</span>
-            <span class="tag">Game Logic</span>
+            <span class="tag">Python</span>
+            <span class="tag">OpenCV</span>
+            <span class="tag">Kinematics</span>
+            <span class="tag">3D Printing</span>
           </div>
         </a>
       </div>
     </div>
   </section>
-  
   <hr class="rule">
-  
-  <!-- SKILLS SECTION -->
   <section id="skills">
     <div class="inner">
       <div class="reveal">
         <p class="label">Skills</p>
-        <h2 class="cipher" data-text="What I work with">What I work with</h2>
+        <h2 class="cipher" data-text="Technical toolbox">Technical toolbox</h2>
       </div>
-      
       <div class="skills-grid reveal">
-        <div class="skill-group" style="--fill: 80%;">
-          <div class="skill-group-title">Programming</div>
+        <div class="skill-group" style="--fill: 88%">
+          <div class="skill-group-title">Hardware &amp; Design</div>
           <div class="skill-list">
-            <div class="skill-item">Java</div>
-            <div class="skill-item">C++</div>
-            <div class="skill-item">Arduino C</div>
-            <div class="skill-item">VEXIQ</div>
+            <div class="skill-item">SolidWorks / Fusion 360</div>
+            <div class="skill-item">3D Printing &amp; Prototyping</div>
+            <div class="skill-item">GD&amp;T &amp; Drafting</div>
+            <div class="skill-item">FEA &amp; Thermal Analysis</div>
           </div>
           <div class="skill-bar"><div class="skill-bar-fill"></div></div>
         </div>
-        
-        <div class="skill-group" style="--fill: 75%;">
-          <div class="skill-group-title">Tools &amp; Platforms</div>
+        <div class="skill-group" style="--fill: 84%">
+          <div class="skill-group-title">Embedded &amp; Control</div>
           <div class="skill-list">
-            <div class="skill-item">SolidWorks</div>
-            <div class="skill-item">Fusion 360</div>
-            <div class="skill-item">AutoCAD</div>
-            <div class="skill-item">Git</div>
-            <div class="skill-item">Sage CRM</div>
+            <div class="skill-item">C / C++ (Arduino, STM32)</div>
+            <div class="skill-item">PID &amp; Feedback Systems</div>
+            <div class="skill-item">CAN Bus &amp; I2C / SPI</div>
+            <div class="skill-item">Sensor Fusion &amp; Filtering</div>
           </div>
           <div class="skill-bar"><div class="skill-bar-fill"></div></div>
         </div>
-        
-        <div class="skill-group" style="--fill: 85%;">
-          <div class="skill-group-title">Engineering</div>
+        <div class="skill-group" style="--fill: 80%">
+          <div class="skill-group-title">Software &amp; Web</div>
           <div class="skill-list">
-            <div class="skill-item">Control Systems</div>
-            <div class="skill-item">Sensor Integration</div>
-            <div class="skill-item">System Testing</div>
-            <div class="skill-item">GD&amp;T &amp; Drawings</div>
+            <div class="skill-item">Python (NumPy, OpenCV)</div>
+            <div class="skill-item">JavaScript (ES6+, Node)</div>
+            <div class="skill-item">Git &amp; Version Control</div>
+            <div class="skill-item">ROS (Robot Operating System)</div>
           </div>
           <div class="skill-bar"><div class="skill-bar-fill"></div></div>
         </div>
       </div>
-      
       <div class="cert-row reveal">
-        <span class="cert">CSWA Certified</span>
-        <span class="cert">WHMIS 2015</span>
-        <span class="cert">CPR Certified</span>
+        <span class="cert">SolidWorks CSWA Certified</span>
+        <span class="cert">Waterloo Tron WHMIS</span>
       </div>
     </div>
   </section>
-  
   <hr class="rule">
-
-  <!-- SYSTEM DIAGNOSTICS SANDBOX SECTION -->
   <section id="diagnostics">
     <div class="inner">
       <div class="hud-box reveal">
-        <span class="hud-addr">SYS_DIAG: 0x03F0</span>
-        
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-          <h2 style="margin-bottom: 0; font-size: var(--t-xl); font-family: var(--f-serif); font-weight: normal;">System Diagnostics Sandbox</h2>
-          <span style="font-family: var(--f-mono); font-size: var(--t-xs); color: var(--orange); letter-spacing: 0.1em; text-transform: uppercase;">MODULE: TELEMETRY_SANDBOX</span>
-        </div>
-        
-        <p style="font-size: 13.5px; color: var(--muted); margin-bottom: 24px; max-width: 600px;">
-          Interactive mechatronics control panel. Tune the sliders of the closed-loop PID controller below to stabilize a simulated mass-spring-damper physical plant, or inspect the simulated real-time CAN bus telemetry messages.
-        </p>
-        
+        <div class="hud-addr">MODULE: TELEMETRY_SANDBOX</div>
         <div class="diagnostics-panel">
-          <!-- PID Simulator -->
           <div class="diag-widget">
             <div class="diag-header">
-              <span>PID LOOP CONTROL WAVEFORM</span>
-              <span>ACTIVE</span>
+              <span>PID FEEDBACK SIMULATOR</span>
+              <span id="pid-stats">Kp: 0.80 | Ki: 0.15 | Kd: 0.05</span>
             </div>
-            
             <div class="diag-canvas-wrap">
-              <canvas id="pid-canvas" width="360" height="150"></canvas>
+              <canvas id="pid-canvas"></canvas>
             </div>
-            
             <div class="pid-sliders">
               <div class="slider-row">
-                <span>Kp</span>
-                <input type="range" id="slider-kp" min="0" max="15" step="0.1" value="6.5">
-                <span id="val-kp">6.5</span>
+                <span>P</span>
+                <input type="range" id="param-kp" min="0" max="2" step="0.05" value="0.80">
+                <span id="val-kp">0.80</span>
               </div>
               <div class="slider-row">
-                <span>Ki</span>
-                <input type="range" id="slider-ki" min="0" max="8" step="0.05" value="1.8">
-                <span id="val-ki">1.8</span>
+                <span>I</span>
+                <input type="range" id="param-ki" min="0" max="1" step="0.02" value="0.15">
+                <span id="val-ki">0.15</span>
               </div>
               <div class="slider-row">
-                <span>Kd</span>
-                <input type="range" id="slider-kd" min="0" max="5" step="0.05" value="0.9">
-                <span id="val-kd">0.9</span>
+                <span>D</span>
+                <input type="range" id="param-kd" min="0" max="0.5" step="0.01" value="0.05">
+                <span id="val-kd">0.05</span>
               </div>
             </div>
           </div>
-          
-          <!-- CAN Telemetry -->
-          <div class="diag-widget">
-            <div class="diag-header">
-              <span>REAL-TIME CAN BUS MATRIX</span>
-              <span>PORT A</span>
-            </div>
-            
-            <div class="status-grid">
-              <div class="status-stat">
-                <div class="stat-lbl">MOTOR_RPM</div>
-                <div class="stat-val" id="hud-val-rpm">0</div>
+          <div class="diag-widget" style="justify-content: space-between;">
+            <div>
+              <div class="diag-header" style="margin-bottom: 8px;">
+                <span>CAN TRANSCIEVER LOG</span>
+                <span>STATUS: STREAMING</span>
               </div>
-              <div class="status-stat">
-                <div class="stat-lbl">CELL_TEMP</div>
-                <div class="stat-val" id="hud-val-temp">0.0°C</div>
-              </div>
-              <div class="status-stat">
-                <div class="stat-lbl">CAN_LOAD</div>
-                <div class="stat-val" id="hud-val-bus">0.0%</div>
-              </div>
-              <div class="status-stat">
-                <div class="stat-lbl">PACK_VOLT</div>
-                <div class="stat-val" id="hud-val-pack">0.0V</div>
+              <div class="diag-log-box" id="diag-log">
               </div>
             </div>
-            
-            <div class="diag-header" style="margin-top: 6px;">
-              <span>CAN TELEMETRY LOG</span>
-              <span>STREAMING</span>
-            </div>
-            <div class="diag-log-box" id="telemetry-log">
-              <!-- Logs populated dynamically -->
+            <div class="status-grid" style="margin-top: 12px;">
+              <div class="status-stat">
+                <span class="stat-lbl">MOTOR_TEMP</span>
+                <span class="stat-val" id="telemetry-temp">42.4°C</span>
+              </div>
+              <div class="status-stat">
+                <span class="stat-lbl">BUS_VOLTAGE</span>
+                <span class="stat-val" id="telemetry-volts">24.08V</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-  
   <hr class="rule">
-  
-  <!-- EASTER EGG DECRYPTION STATION -->
-  <section id="easter-egg">
+  <section id="easteregg">
     <div class="inner">
       <div class="hud-box reveal">
-        <span class="hud-addr">SYS_CRYPT: 0x05DC</span>
-        
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
-          <h2 style="margin-bottom: 0; font-size: var(--t-xl); font-family: var(--f-serif); font-weight: normal;">Origin Archives Decryption</h2>
-          <span style="font-family: var(--f-mono); font-size: var(--t-xs); color: var(--orange); letter-spacing: 0.1em;" id="decrypt-status">STATUS: LOCKED</span>
-        </div>
-        
-        <div class="egg-prompt" id="egg-prompt">
-          <span class="egg-glyph">⚙️</span>
-          <span class="egg-tag">RESTRICTED DOS DATAFILE</span>
-          <p class="egg-sub">You have scrolled to the boundaries of the repository. Validate a cryptographic key string to decrypt the developer's original records.</p>
-          
+        <div class="hud-addr">DECRYPT_KEY_REQUIRED</div>
+        <div class="egg-prompt" id="egg-prompt-wrap">
+          <div class="egg-glyph">🔑</div>
+          <span class="egg-tag">Origin Archives Decryption</span>
+          <p class="egg-sub">Cryptographic database archives locked. Provide a valid verification key to run diagnostic decryption cycles.</p>
           <div class="decrypt-controls">
-            <input type="text" class="decrypt-input" id="decrypt-input" placeholder="Type 'origin', 'car', 'computer'..." onkeydown="if(event.key === 'Enter') checkDecryptKey()">
-            <button class="decrypt-btn" onclick="checkDecryptKey()">DECRYPT</button>
+            <input type="text" class="decrypt-input" id="decrypt-key" placeholder="Enter security token..." aria-label="Decryption key">
+            <button class="decrypt-btn" onclick="attemptDecryption()">Verify</button>
           </div>
-          
-          <div class="decrypt-console-log" id="decrypt-console-log">> terminal initialized... awaiting decryption sequence.</div>
-          
-          <div style="margin-top: 10px; color: var(--muted); font-size: 11px;">Or bypass validation to read immediately:</div>
-          <button class="egg-btn" onclick="revealEggDirect()">Read the origin story</button>
+          <div class="decrypt-console-log" id="decrypt-log"></div>
         </div>
-        
-        <div class="fun-facts" id="fun-facts">
-          <!-- Animated car strip -->
-          <div class="car-strip">
-            <div class="road-dashes"></div>
-            <svg id="car-svg" width="150" height="52" viewBox="0 0 150 52">
-              <polygon points="10,38 18,24 38,16 80,14 112,16 136,26 140,38" fill="#f4320b" opacity=".88"/>
-              <polygon points="38,16 48,8 96,8 112,16" fill="#c95f2a" opacity=".72"/>
-              <line x1="48" y1="8" x2="38" y2="16" stroke="#0c0b0a" stroke-width="1" opacity=".45"/>
-              <line x1="96" y1="8" x2="112" y2="16" stroke="#0c0b0a" stroke-width="1" opacity=".45"/>
-              <rect x="135" y="30" width="3" height="8" fill="#6a5040" opacity=".6"/>
-              <rect x="139" y="32" width="3" height="6" fill="#6a5040" opacity=".5"/>
-              <circle cx="38"  cy="40" r="10" fill="#141210" stroke="#f4320b" stroke-width="1.5"/>
-              <circle cx="38"  cy="40" r="4"  fill="#f4320b" opacity=".5"/>
-              <circle cx="38"  cy="40" r="1.5" fill="#f0ebe4"/>
-              <circle cx="112" cy="40" r="10" fill="#141210" stroke="#f4320b" stroke-width="1.5"/>
-              <circle cx="112" cy="40" r="4"  fill="#f4320b" opacity=".5"/>
-              <circle cx="112" cy="40" r="1.5" fill="#f0ebe4"/>
-              <polygon points="14,30 18,26 26,25 26,30" fill="#fffbe8" opacity=".7"/>
-              <rect x="136" y="26" width="6" height="5" rx="1" fill="#ff4422" opacity=".8"/>
-              <rect x="58"  y="22" width="22" height="5" rx="1" fill="#0c0b0a" opacity=".4"/>
-              <circle cx="6" cy="37" r="3.5" fill="#786e64" opacity=".35"/>
-              <circle cx="1" cy="33" r="2.5" fill="#786e64" opacity=".2"/>
-            </svg>
-          </div>
-          
-          <div class="fun-fact" id="ff1" style="margin-bottom: var(--s4);">
-            <div class="fun-fact-label">Origin #1 — The Computer</div>
+        <div class="car-strip">
+          <div class="road-dashes"></div>
+          <svg id="car-svg" width="130" height="42" viewBox="0 0 130 42" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12,28 L8,28 C5.8,28 4,26.2 4,24 L4,20 C4,17.8 5.8,16 8,16 L12,16 Z" fill="var(--border-hi)"/>
+            <path d="M118,28 L114,28 C111.8,28 110,26.2 110,24 L110,20 C110,17.8 111.8,16 114,16 L118,16 Z" fill="var(--orange)"/>
+            <path d="M18,24 L108,24 C112.4,24 116,20.4 116,16 L116,14 C116,7.4 110.6,2 104,2 L22,2 C15.4,2 10,7.4 10,14 L10,16 C10,20.4 13.6,24 18,24 Z" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+            <path d="M26,14 L100,14 C102.2,14 104,12.2 104,10 L104,8 C104,4.7 101.3,2 98,2 L28,2 C24.7,2 22,4.7 22,8 L22,10 C22,12.2 23.8,14 26,14 Z" fill="var(--card)" stroke="var(--border)" stroke-width="1"/>
+            <circle cx="28" cy="28" r="8" fill="#000" stroke="var(--border)" stroke-width="1.5"/>
+            <circle cx="28" cy="28" r="3" fill="var(--orange)"/>
+            <circle cx="98" cy="28" r="8" fill="#000" stroke="var(--border)" stroke-width="1.5"/>
+            <circle cx="98" cy="28" r="3" fill="var(--orange)"/>
+            <path d="M10,10 L116,10" stroke="var(--border-hi)" stroke-width="1" opacity="0.3"/>
+            <path d="M44,2 L48,14" stroke="var(--border)" stroke-width="1"/>
+            <path d="M82,2 L78,14" stroke="var(--border)" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="fun-facts" id="egg-facts">
+          <div class="fun-fact" id="fact-origin">
+            <div class="fun-fact-label">DATABASE RECORD // ORIGIN</div>
             <div class="fun-fact-text">
-              My love for computers and technology started at the age of <em>11</em> when I had to fix a CD drive in our family computer. That one repair opened a door I never closed.
+              My name is <em>Sobhan Zare</em>. I was born on **April 4th, 2005**, in **Shiraz, Iran** — a city renowned for its rich history of poetry, wine, and gorgeous gardens.
+              I moved to Canada when I was **4 years old** in 2009. I lived in **Richmond Hill, Ontario**, which I consider my hometown. Growing up, I fell in love with Lego, robotics, and tinkering.
             </div>
           </div>
-          
-          <div class="fun-fact" id="ff2">
-            <div class="fun-fact-label">Origin #2 — The Car</div>
+          <div class="fun-fact" id="fact-car">
+            <div class="fun-fact-label">DATABASE RECORD // EV_DRIVETRAIN</div>
             <div class="fun-fact-text">
-              My love for cars started at the age of <em>4</em> when I first saw the release of the <em>Lamborghini Aventador LP 700-4</em> finished in <em>Arancio Argos</em> — circa 2011. That orange has never left me.
+              I drive a <strong>2015 Chevrolet Volt</strong>. It is a plug-in hybrid vehicle that is essentially an electric car carrying its own generator. It's a gorgeous engineering solution for commuter range anxiety.
+              My goal is to design custom EV conversions. Currently, I'm working with the <strong>UW Formula Electric Team</strong> (Driveline) to design high-performance electric powertrain systems.
+            </div>
+          </div>
+          <div class="fun-fact" id="fact-computer">
+            <div class="fun-fact-label">DATABASE RECORD // CORE_PROCESSOR</div>
+            <div class="fun-fact-text">
+              My main computer is a <strong>MacBook Pro M1 (16 GB memory)</strong>. I do all of my software engineering, CAD modeling, and school coursework on it.
+              For heavy calculations, embedded compiling, and hardware simulation testing, I remote connect into my custom-built desktop PC running an <strong>Intel i5-12600K</strong> and an <strong>Nvidia RTX 3060 Ti</strong>.
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-  
   <hr class="rule">
-  
-  <!-- CONTACT SECTION -->
   <section id="contact">
     <div class="inner">
       <div class="reveal">
         <p class="label">Contact</p>
-        <h2 class="cipher" data-text="Let's connect">Let's connect</h2>
+        <h2 class="cipher" data-text="Get in touch">Get in touch</h2>
       </div>
-      
       <div class="contact-grid reveal">
         <a href="mailto:mr.sobhan.z@gmail.com" class="contact-card">
-          <div class="contact-icon">✉️</div>
+          <div class="contact-icon">✉</div>
           <div>
             <div class="contact-label">Email</div>
             <div class="contact-value">mr.sobhan.z@gmail.com</div>
           </div>
         </a>
-        
-        <a href="tel:647-836-5458" class="contact-card">
-          <div class="contact-icon">📞</div>
+        <a href="https://linkedin.com/in/sobhanzare" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-icon">👔</div>
           <div>
-            <div class="contact-label">Phone</div>
-            <div class="contact-value">647-836-5458</div>
+            <div class="contact-label">LinkedIn</div>
+            <div class="contact-value">linkedin.com/in/sobhanzare</div>
           </div>
         </a>
-        
-        <a href="https://github.com/mrsobhanz" target="_blank" rel="noopener" class="contact-card">
+        <a href="https://github.com/Sobhanz" target="_blank" rel="noopener" class="contact-card">
           <div class="contact-icon">🐙</div>
           <div>
             <div class="contact-label">GitHub</div>
-            <div class="contact-value">mrsobhanz ↗</div>
+            <div class="contact-value">github.com/Sobhanz</div>
           </div>
         </a>
-        
-        <a href="https://www.linkedin.com/in/sobhan-zr" target="_blank" rel="noopener" class="contact-card">
-          <div class="contact-icon">💼</div>
+        <a href="tel:647-909-0268" class="contact-card">
+          <div class="contact-icon">📞</div>
           <div>
-            <div class="contact-label">LinkedIn</div>
-            <div class="contact-value">sobhan-zr ↗</div>
+            <div class="contact-label">Phone</div>
+            <div class="contact-value">647-909-0268</div>
           </div>
         </a>
       </div>
     </div>
   </section>
-  
   <hr class="rule">
-  
-  <!-- RESUME SECTION -->
   <section id="resume">
     <div class="inner">
       <div class="resume-row reveal">
         <div class="resume-text">
-          <h3 class="resume-title">Curriculum Vitae</h3>
-          <p class="resume-sub">Direct access to my structured experience and course work details.</p>
+          <h2 class="resume-title">Curriculum Vitae</h2>
+          <p class="resume-sub">View my detailed academic history, technical skills, and mechanical/software work experience.</p>
         </div>
-        <a href="resume.pdf" target="_blank" class="resume-download">
-          <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7 1v10M7 11l-4-4m4 4l4-4M1 16h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Download Resume
-        </a>
+        <a href="resume.pdf" target="_blank" rel="noopener" class="resume-download">Open Resume PDF ↗</a>
       </div>
     </div>
   </section>
-
 </main>
-
-<!-- ══════════════════════════════════════════
-     FOOTER
-     ══════════════════════════════════════════ -->
 <footer>
-  <div>© 2026 Sobhan Zare // WATERLOO, ON</div>
-  <div>KERNEL_OK</div>
-  <div class="footer-uptime">SYS_UPTIME: <span id="uptime-val">00:00:00</span></div>
+  <div>© 2026 Sobhan Zare. All rights reserved.</div>
+  <div class="footer-uptime">SYSTEM UPTIME: <span id="uptime-val">00:00:00</span></div>
 </footer>
-
-<!-- ══════════════════════════════════════════
-     SYSTEM SCRIPTS
-     ══════════════════════════════════════════ -->
 <script>
-// 1. Theme Configuration Logic
-let currentTheme = localStorage.getItem('sz-theme') || 'dark';
-function applyTheme(t) {
-  const resolved = t === 'system' ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : t;
-  document.documentElement.setAttribute('data-theme', resolved);
-  document.getElementById('theme-label').textContent = ({dark:'Dark',light:'Light',system:'System'})[t]||'Dark';
-  document.querySelectorAll('.theme-opt').forEach(o => o.classList.remove('active'));
-  const opt = document.getElementById('opt-'+t); if (opt) opt.classList.add('active');
-  syncReticleColour();
-}
-
-function setTheme(t) {
-  currentTheme = t;
-  localStorage.setItem('sz-theme', t);
-  applyTheme(t);
-  closeTheme();
-}
-
-function closeTheme() {
-  document.getElementById('themeWrap').classList.remove('open');
-  document.getElementById('themeBtn').setAttribute('aria-expanded', 'false');
-}
-
-document.getElementById('themeBtn').addEventListener('click', (e) => {
-  e.stopPropagation();
-  const open = document.getElementById('themeWrap').classList.toggle('open');
-  document.getElementById('themeBtn').setAttribute('aria-expanded', String(open));
-});
-
-document.addEventListener('click', e => {
-  if (!document.getElementById('themeWrap').contains(e.target)) closeTheme();
-});
-
-window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
-  if (currentTheme === 'system') applyTheme('system');
-});
-
-// Initialize Theme
-applyTheme(currentTheme);
-
-// 2. Reticle Cursor
-const reticleEl = document.getElementById('reticle');
-const retDotEl = document.getElementById('ret-dot');
-const retSpinEl = document.getElementById('ret-spin');
-let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-let retX = mouseX, retY = mouseY;
-
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
-
-(function updateReticle() {
-  const dx = mouseX - retX;
-  const dy = mouseY - retY;
-  retX += dx * 0.22;
-  retY += dy * 0.22;
-  reticleEl.style.transform = `translate3d(${retX}px, ${retY}px, 0)`;
-  requestAnimationFrame(updateReticle);
-})();
-
-let spinDeg = 0;
-(function spinLoop() {
-  spinDeg = (spinDeg + 0.45) % 360;
-  retSpinEl.style.transform = `rotate(${spinDeg}deg)`;
-  retSpinEl.style.transformOrigin = '0 0';
-  requestAnimationFrame(spinLoop);
-})();
-
-document.querySelectorAll('a, button, input, [role="button"]').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    document.body.classList.add('hov');
-    retDotEl.setAttribute('r', '2.6');
-  });
-  el.addEventListener('mouseleave', () => {
-    document.body.classList.remove('hov');
-    retDotEl.setAttribute('r', '1.8');
-  });
-});
-
-function syncReticleColour() {
-  const col = document.documentElement.getAttribute('data-theme') === 'dark' ? '#f4320b' : '#c42605';
-  reticleEl.querySelectorAll('[stroke]').forEach(el => el.setAttribute('stroke', col));
-  retDotEl.setAttribute('fill', col);
-}
-
-// 3. Circuit board Canvas background
-const cvs = document.getElementById('circuit-canvas');
-const ctx = cvs.getContext('2d');
-let W, H, CELL = 46, cols, rows, nodes, traces, pulses, comps;
-const rnd = (a, b) => a + Math.random() * (b - a);
-const pick = a => a[Math.floor(Math.random() * a.length)];
-const shuf = a => [...a].sort(() => Math.random() - .5);
-
-function palette() {
-  const d = document.documentElement.getAttribute('data-theme') === 'dark';
-  return {
-    trace: d ? '#2d2720' : '#8a7a68',
-    nodeS: d ? '#38302a' : '#7a6a58',
-    nodeV: d ? '#463e36' : '#6a5a48',
-    orange: d ? '#f4320b' : '#c42605',
-    rust: d ? '#c95f2a' : '#a03010',
-    violet: d ? '#9b7fff' : '#5a40c8',
-    comp: d ? '#463e36' : '#6a5a48'
-  };
-}
-
-function resize() {
-  W = cvs.width = window.innerWidth;
-  H = cvs.height = window.innerHeight;
-  cols = Math.ceil(W / CELL) + 2;
-  rows = Math.ceil(H / CELL) + 2;
-  buildCircuit();
-}
-
-function buildCircuit() {
-  nodes = []; traces = []; pulses = []; comps = [];
-  const nm = new Map();
-  for (let c = 0; c < cols; c++) {
-    for (let r = 0; r < rows; r++) {
-      if (Math.random() < .21) {
-        const n = { x: c * CELL, y: r * CELL, isVia: Math.random() < .09, glow: 0 };
-        nodes.push(n);
-        nm.set(`${c},${r}`, n);
-      }
-    }
-  }
-  const used = new Set();
-  nodes.forEach(n => {
-    const c = Math.round(n.x / CELL), r = Math.round(n.y / CELL);
-    let conn = 0;
-    for (const [dc, dr] of shuf([[-1, 0], [1, 0], [0, -1], [0, 1]])) {
-      if (conn >= Math.floor(rnd(1, 3.5))) break;
-      for (let s = 1; s <= 4; s++) {
-        const k = `${c + dc * s},${r + dr * s}`;
-        if (nm.has(k)) {
-          const m = nm.get(k), pk = [n.x, n.y, m.x, m.y].sort().join('|');
-          if (!used.has(pk)) {
-            used.add(pk);
-            const hf = Math.random() > .5;
-            traces.push({ x1: n.x, y1: n.y, ex: hf ? m.x : n.x, ey: hf ? n.y : m.y, x2: m.x, y2: m.y, progress: 0, done: false, sf: Math.random() * .65 });
-            conn++;
-          }
-          break;
-        }
-      }
-    }
-  });
-  nodes.filter(n => n.isVia).forEach(n => comps.push({ x: n.x, y: n.y, type: pick(['ic', 'cap', 'res']), op: 0 }));
-}
-
-function rebuildCircuit() {
-  bootTime = null;
-  buildCircuit();
-  syncReticleColour();
-}
-
-function tpt(t, p) {
-  const s1 = Math.hypot(t.ex - t.x1, t.ey - t.y1), s2 = Math.hypot(t.x2 - t.ex, t.y2 - t.ey), tot = (s1 + s2) || 1, d = p * tot;
-  if (d <= s1) {
-    const f = s1 ? d / s1 : 0;
-    return { x: t.x1 + (t.ex - t.x1) * f, y: t.y1 + (t.ey - t.y1) * f };
-  }
-  const f = s2 ? (d - s1) / s2 : 0;
-  return { x: t.ex + (t.x2 - t.ex) * f, y: t.ey + (t.y2 - t.ey) * f };
-}
-
-function drawComp(cx, cy, type, op, col) {
-  ctx.save();
-  ctx.globalAlpha = op * .27;
-  ctx.strokeStyle = col;
-  ctx.lineWidth = .9;
-  if (type === 'ic') {
-    const W2 = 26, H2 = 18;
-    ctx.strokeRect(cx - W2 / 2, cy - H2 / 2, W2, H2);
-    for (let i = 0; i < 3; i++) {
-      const py = cy - H2 / 2 + 3 + i * 6;
-      ctx.beginPath(); ctx.moveTo(cx - W2 / 2 - 5, py); ctx.lineTo(cx - W2 / 2, py); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(cx + W2 / 2, py); ctx.lineTo(cx + W2 / 2 + 5, py); ctx.stroke();
-    }
-  } else if (type === 'cap') {
-    ctx.beginPath(); ctx.moveTo(cx - 8, cy - 4); ctx.lineTo(cx + 8, cy - 4); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx - 8, cy + 4); ctx.lineTo(cx + 8, cy + 4); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx, cy - 9); ctx.lineTo(cx, cy - 4); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx, cy + 4); ctx.lineTo(cx, cy + 9); ctx.stroke();
+let currentTheme = 'dark';
+function setTheme(theme) {
+  const html = document.documentElement;
+  const label = document.getElementById('theme-label');
+  const options = document.querySelectorAll('.theme-opt');
+  if (theme === 'system') {
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    html.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    label.textContent = 'System';
+    currentTheme = 'system';
   } else {
-    ctx.strokeRect(cx - 9, cy - 3.5, 18, 7);
-    ctx.beginPath(); ctx.moveTo(cx - 14, cy); ctx.lineTo(cx - 9, cy); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx + 9, cy); ctx.lineTo(cx + 14, cy); ctx.stroke();
+    html.setAttribute('data-theme', theme);
+    label.textContent = theme.charAt(0).toUpperCase() + theme.slice(1);
+    currentTheme = theme;
   }
-  ctx.restore();
-}
-
-function flashNear(x, y) {
-  let best = null, bd = Infinity;
-  nodes.forEach(n => {
-    const d = Math.hypot(n.x - x, n.y - y);
-    if (d < bd) { bd = d; best = n; }
+  options.forEach(opt => {
+    opt.classList.remove('active');
+    if (opt.id === `opt-${theme}`) opt.classList.add('active');
   });
-  if (best && bd < CELL * 1.5) best.glow = 1;
+  localStorage.setItem('theme', theme);
+  const circuitCanvas = document.getElementById('circuit-canvas');
+  if (circuitCanvas && typeof redrawCircuit === 'function') {
+    redrawCircuit();
+  }
 }
-
-let bootTime = null; const BOOT_DUR = 2600; let lastSpawn = 0;
-function drawCanvasFrame(ts) {
-  if (!bootTime) bootTime = ts;
-  const bf = Math.min((ts - bootTime) / BOOT_DUR, 1), C = palette();
-  ctx.clearRect(0, 0, W, H);
-  traces.forEach(t => {
-    const lf = Math.max(0, Math.min(1, (bf - t.sf) / (1 - t.sf + .001)));
-    t.progress = lf; if (lf >= 1) t.done = true; if (lf <= 0) return;
-    const s1 = Math.hypot(t.ex - t.x1, t.ey - t.y1), s2 = Math.hypot(t.x2 - t.ex, t.y2 - t.ey), tot = (s1 + s2) || 1, drawn = lf * tot;
-    ctx.beginPath(); ctx.strokeStyle = C.trace; ctx.lineWidth = 1.1; ctx.lineCap = 'square';
-    ctx.moveTo(t.x1, t.y1);
-    if (drawn <= s1) {
-      const f = s1 ? drawn / s1 : 0; ctx.lineTo(t.x1 + (t.ex - t.x1) * f, t.y1 + (t.ey - t.y1) * f);
+function initTheme() {
+  const saved = localStorage.getItem('theme') || 'dark';
+  setTheme(saved);
+  const sysQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  sysQuery.addEventListener('change', () => {
+    if (currentTheme === 'system') setTheme('system');
+  });
+}
+initTheme();
+const themeBtn = document.getElementById('themeBtn');
+const themeWrap = document.getElementById('themeWrap');
+if (themeBtn && themeWrap) {
+  themeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = themeWrap.classList.toggle('open');
+    themeBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', () => {
+    themeWrap.classList.remove('open');
+    themeBtn.setAttribute('aria-expanded', 'false');
+  });
+  themeWrap.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      themeWrap.classList.remove('open');
+      themeBtn.setAttribute('aria-expanded', 'false');
+      themeBtn.focus();
+    }
+  });
+}
+const reticle = document.getElementById('reticle');
+const dot = document.getElementById('ret-dot');
+const spin = document.getElementById('ret-spin');
+let mX = 0, mY = 0, rX = 0, rY = 0;
+let clickTimer = null;
+document.addEventListener('mousemove', (e) => {
+  mX = e.clientX;
+  mY = e.clientY;
+});
+function animateReticle() {
+  rX += (mX - rX) * 0.22;
+  rY += (mY - rY) * 0.22;
+  if (reticle) {
+    reticle.style.transform = `translate3d(${rX}px, ${rY}px, 0)`;
+  }
+  requestAnimationFrame(animateReticle);
+}
+animateReticle();
+document.querySelectorAll('a, button, [role="button"], input, range').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+});
+document.addEventListener('mousedown', () => {
+  if (dot) dot.setAttribute('r', '4');
+  if (spin) spin.style.transform = 'scale(0.85)';
+});
+document.addEventListener('mouseup', () => {
+  if (dot) dot.setAttribute('r', '1.8');
+  if (spin) spin.style.transform = 'none';
+});
+const canvas = document.getElementById('circuit-canvas');
+let circuitTraces = [];
+function resizeCanvas() {
+  if (!canvas) return;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  generateTraces();
+}
+window.addEventListener('resize', resizeCanvas);
+function generateTraces() {
+  if (!canvas) return;
+  circuitTraces = [];
+  const count = Math.max(12, Math.floor(canvas.width / 120));
+  for (let i = 0; i < count; i++) {
+    const isHorizontal = Math.random() > 0.45;
+    let sX, sY, d1, d2;
+    if (isHorizontal) {
+      sX = Math.random() > 0.5 ? -40 : canvas.width + 40;
+      sY = Math.random() * canvas.height;
+      d1 = Math.random() * (canvas.width * 0.4) + 60;
+      d2 = Math.random() > 0.5 ? 90 : -90;
     } else {
-      ctx.lineTo(t.ex, t.ey);
-      const f = s2 ? (drawn - s1) / s2 : 0; ctx.lineTo(t.ex + (t.x2 - t.ex) * f, t.ey + (t.y2 - t.ey) * f);
+      sX = Math.random() * canvas.width;
+      sY = Math.random() > 0.5 ? -40 : canvas.height + 40;
+      d1 = Math.random() * (canvas.height * 0.4) + 60;
+      d2 = Math.random() > 0.5 ? 90 : -90;
+    }
+    circuitTraces.push({
+      sX, sY,
+      d1, d2,
+      isHorizontal,
+      speed: Math.random() * 0.8 + 0.35,
+      drawn: 0,
+      width: Math.random() * 1.5 + 0.8,
+      active: true,
+      dots: []
+    });
+  }
+}
+function drawCircuit() {
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const theme = document.documentElement.getAttribute('data-theme');
+  const traceColor = theme === 'light' ? 'rgba(196, 38, 5, 0.08)' : 'rgba(244, 50, 11, 0.07)';
+  const pulseColor = theme === 'light' ? 'rgba(196, 38, 5, 0.5)' : 'rgba(244, 50, 11, 0.4)';
+  const nodeColor = theme === 'light' ? 'rgba(196, 38, 5, 0.18)' : 'rgba(244, 50, 11, 0.15)';
+  ctx.strokeStyle = traceColor;
+  ctx.fillStyle = nodeColor;
+  circuitTraces.forEach(t => {
+    ctx.lineWidth = t.width;
+    ctx.beginPath();
+    ctx.moveTo(t.sX, t.sY);
+    let p1X = t.sX;
+    let p1Y = t.sY;
+    if (t.isHorizontal) {
+      const dir = t.sX < 0 ? 1 : -1;
+      p1X = t.sX + t.d1 * dir;
+    } else {
+      const dir = t.sY < 0 ? 1 : -1;
+      p1Y = t.sY + t.d1 * dir;
+    }
+    let p2X = p1X;
+    let p2Y = p1Y;
+    if (t.isHorizontal) {
+      const dir = t.sX < 0 ? 1 : -1;
+      p2X = p1X + 40 * dir;
+      p2Y = p1Y + (t.d2 > 0 ? 40 : -40);
+    } else {
+      const dir = t.sY < 0 ? 1 : -1;
+      p2X = p1X + (t.d2 > 0 ? 40 : -40);
+      p2Y = p1Y + 40 * dir;
+    }
+    const s1 = t.d1;
+    const s2 = s1 + 56.5; 
+    const totalLength = s2 + 120;
+    if (t.drawn < s1) {
+      if (t.isHorizontal) {
+        const dir = t.sX < 0 ? 1 : -1;
+        ctx.lineTo(t.sX + t.drawn * dir, t.sY);
+      } else {
+        const dir = t.sY < 0 ? 1 : -1;
+        ctx.lineTo(t.sX, t.sY + t.drawn * dir);
+      }
+    } else if (t.drawn < s2) {
+      ctx.lineTo(p1X, p1Y);
+      const ratio = (t.drawn - s1) / 56.5;
+      ctx.lineTo(p1X + (p2X - p1X) * ratio, p1Y + (p2Y - p1Y) * ratio);
+    } else {
+      ctx.lineTo(p1X, p1Y);
+      ctx.lineTo(p2X, p2Y);
+      const rem = t.drawn - s2;
+      if (t.isHorizontal) {
+        const dir = t.sX < 0 ? 1 : -1;
+        ctx.lineTo(p2X + rem * dir, p2Y);
+      } else {
+        const dir = t.sY < 0 ? 1 : -1;
+        ctx.lineTo(p2X, p2Y + rem * dir);
+      }
     }
     ctx.stroke();
-    if (lf < 1) {
-      const tip = tpt(t, lf), g = ctx.createRadialGradient(tip.x, tip.y, 0, tip.x, tip.y, 7);
-      g.addColorStop(0, 'rgba(244,50,11,.55)'); g.addColorStop(1, 'rgba(244,50,11,0)');
-      ctx.beginPath(); ctx.arc(tip.x, tip.y, 7, 0, Math.PI * 2); ctx.fillStyle = g; ctx.fill();
+    if (t.drawn >= totalLength - 2 && t.active) {
+      t.active = false;
+      ctx.beginPath();
+      if (t.isHorizontal) {
+        const dir = t.sX < 0 ? 1 : -1;
+        ctx.arc(p2X + 120 * dir, p2Y, 2.5, 0, 2 * Math.PI);
+      } else {
+        const dir = t.sY < 0 ? 1 : -1;
+        ctx.arc(p2X, p2Y + 120 * dir, 2.5, 0, 2 * Math.PI);
+      }
+      ctx.fill();
+    }
+    t.drawn += t.speed;
+    if (t.drawn > totalLength + 150) {
+      t.drawn = 0;
+      t.active = true;
     }
   });
-  nodes.forEach(n => {
-    const r = n.isVia ? 4.2 : 1.8;
-    if (n.glow > 0) {
-      const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * 7);
-      g.addColorStop(0, `rgba(244,50,11,${n.glow * .7})`); g.addColorStop(1, 'rgba(244,50,11,0)');
-      ctx.beginPath(); ctx.arc(n.x, n.y, r * 7, 0, Math.PI * 2); ctx.fillStyle = g; ctx.fill();
-      n.glow = Math.max(0, n.glow - .02);
-    }
-    ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
-    ctx.fillStyle = n.glow > .15 ? C.orange : (n.isVia ? C.nodeV : C.nodeS);
-    ctx.fill();
-    if (n.isVia) {
-      ctx.beginPath(); ctx.arc(n.x, n.y, r + 3, 0, Math.PI * 2); ctx.strokeStyle = C.nodeV; ctx.lineWidth = .75; ctx.stroke();
-    }
-  });
-  if (bf > .5) comps.forEach(c => { c.op = Math.min(1, c.op + .004); drawComp(c.x, c.y, c.type, c.op, C.comp); });
-  if (bf > .55 && ts - lastSpawn > 155 && pulses.length < 24) {
-    const ready = traces.filter(t => t.done);
-    if (ready.length) {
-      const t = pick(ready);
-      pulses.push({ t, p: 0, speed: rnd(.003, .009), color: pick([C.orange, C.rust, C.violet]), tl: Math.floor(rnd(5, 13)) });
-    }
-    lastSpawn = ts;
-  }
-  pulses = pulses.filter(p => p.p <= 1.02);
-  pulses.forEach(pu => {
-    pu.p += pu.speed; const head = tpt(pu.t, Math.min(pu.p, 1));
-    for (let i = pu.tl; i >= 0; i--) {
-      const p = tpt(pu.t, Math.max(0, pu.p - i * .016));
-      ctx.globalAlpha = ((pu.tl - i) / pu.tl) * .65; ctx.beginPath();
-      ctx.arc(p.x, p.y, Math.max(.3, 2.2 - i * .11), 0, Math.PI * 2); ctx.fillStyle = pu.color; ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-    const hg = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, 10);
-    hg.addColorStop(0, pu.color + 'a5'); hg.addColorStop(1, pu.color + '00');
-    ctx.beginPath(); ctx.arc(head.x, head.y, 10, 0, Math.PI * 2); ctx.fillStyle = hg; ctx.fill();
-    ctx.beginPath(); ctx.arc(head.x, head.y, 2.1, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill();
-    if (pu.p >= .95) flashNear(pu.t.x2, pu.t.y2);
-  });
-  const sy = (ts * .032) % H, sg = ctx.createLinearGradient(0, sy - 44, 0, sy + 44);
-  sg.addColorStop(0, 'rgba(244,50,11,0)'); sg.addColorStop(.5, 'rgba(244,50,11,.011)'); sg.addColorStop(1, 'rgba(244,50,11,0)');
-  ctx.fillStyle = sg; ctx.fillRect(0, Math.max(0, sy - 44), W, 88);
-  requestAnimationFrame(drawCanvasFrame);
+  requestAnimationFrame(drawCircuit);
 }
-
-resize();
-window.addEventListener('resize', resize);
-requestAnimationFrame(drawCanvasFrame);
-
-// 4. Status HUD Floating Telemetry Simulation (original loop)
-(function() {
-  const hud = document.getElementById('status-hud');
-  const elRpm = document.getElementById('hud-rpm');
-  const elDuty = document.getElementById('hud-duty');
-  let rpm = 3200;
-  let timer = null;
-  
-  document.addEventListener('mousemove', () => {
-    hud.classList.add('moving');
-    clearTimeout(timer);
-    timer = setTimeout(() => hud.classList.remove('moving'), 1200);
-  });
-  
-  (function loop() {
-    rpm += (Math.random() - .46) * 130;
-    rpm = Math.max(800, Math.min(7000, rpm));
-    if (elRpm) elRpm.textContent = Math.round(rpm / 100) * 100;
-    if (elDuty) elDuty.textContent = (Math.sin(Date.now() / 900) * .5 + .5).toFixed(2);
-    setTimeout(loop, 150);
-  })();
-})();
-
-// 5. Ticker Items
-const tickerItems = ['PID Control', 'SolidWorks', 'Fusion 360', 'Arduino C', 'C++', 'Motor Drivers', 'Optical Sensors', 'CAN Bus', 'PWM Signals', 'Driveline Engineering', 'Formula Electric', 'Torque Vectoring', 'Regenerative Braking', 'Embedded Systems', 'Interrupt Handling', 'CAD & GD&T', 'System Integration', 'Feedback Loops'];
-const track = document.getElementById('ticker-track');
-if (track) {
-  [...tickerItems, ...tickerItems].forEach(t => {
-    const s = document.createElement('span');
-    s.textContent = t;
-    track.appendChild(s);
-  });
+resizeCanvas();
+drawCircuit();
+function redrawCircuit() {
+  generateTraces();
 }
-
-// 6. Typewriter effect
-const eyEl = document.getElementById('eyebrow-text');
-const eyFull = 'Mechatronics Engineering · University of Waterloo';
-let ti = 0;
+const phrases = [
+  "Mechatronics Engineer",
+  "Robotics Innovator",
+  "Embedded Programmer",
+  "Control Systems Designer"
+];
+let phraseIdx = 0;
+let charIdx = 0;
+let isDeleting = false;
+const eyebrow = document.getElementById('eyebrow-text');
 function runTypewriter() {
-  setTimeout(() => {
-    const iv = setInterval(() => {
-      if (eyEl) eyEl.textContent = eyFull.slice(0, ++ti);
-      if (ti >= eyFull.length) clearInterval(iv);
-    }, 32);
-  }, 280);
+  if (!eyebrow) return;
+  const current = phrases[phraseIdx];
+  if (isDeleting) {
+    eyebrow.textContent = current.substring(0, charIdx - 1);
+    charIdx--;
+  } else {
+    eyebrow.textContent = current.substring(0, charIdx + 1);
+    charIdx++;
+  }
+  let delay = 90;
+  if (isDeleting) delay /= 1.8;
+  if (!isDeleting && charIdx === current.length) {
+    isDeleting = true;
+    delay = 1800; 
+  } else if (isDeleting && charIdx === 0) {
+    isDeleting = false;
+    phraseIdx = (phraseIdx + 1) % phrases.length;
+    delay = 400; 
+  }
+  setTimeout(runTypewriter, delay);
 }
-
-// 7. Scroll reveal IntersectionObserver
-const revealObs = new IntersectionObserver((entries) => {
+const ticker = document.getElementById('ticker-track');
+const tickerTech = [
+  "CAN Bus 500kbps", "SolidWorks CSWA", "PID Controller Matrix",
+  "STM32 HSE 168MHz", "GPIO Port Mapping", " brushless driver DRV8302",
+  "ROS2 Humble Node", "C++ 20 core", "OpenCV Vision Pipeline",
+  "ARM Cortex-M4", "MATLAB Feedback Loop", "SolidWorks Simulation FEA"
+];
+function initTicker() {
+  if (!ticker) return;
+  let items = [...tickerTech, ...tickerTech, ...tickerTech];
+  ticker.innerHTML = items.map(text => `<span>${text}</span>`).join('');
+}
+initTicker();
+const observerOpts = { threshold: 0.1, rootMargin: '0px 0px -40px 0px' };
+const revealObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
-      
-      // If it contains cipher headings, trigger them
-      const cipher = entry.target.querySelector('h2.cipher');
-      if (cipher) runCipher(cipher);
-      
-      // If it's the skills section, animate skill bars
-      if (entry.target.id === 'skills') {
-        entry.target.querySelectorAll('.skill-group').forEach(sg => {
-          sg.classList.add('in-view');
-        });
-      }
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOpts);
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in-view');
     }
   });
 }, { threshold: 0.15 });
-
-document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
-
-// 8. Cipher text scrambling effect (original logic)
-const CIPHER_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*_+-=<>?/\\|[]{}';
-function runCipher(el) {
-  const final = el.getAttribute('data-text');
-  if (!final) return;
-  el.classList.add('cipher-active');
-  let iter = 0;
-  clearInterval(el._civ);
-  el._civ = setInterval(() => {
-    el.textContent = final.split('').map((char, index) => {
-      if (char === ' ') return ' ';
-      if (index < iter) return final[index];
-      return CIPHER_CHARS[Math.floor(Math.random() * CIPHER_CHARS.length)];
-    }).join('');
-    if (iter >= final.length) {
-      clearInterval(el._civ);
-      el.classList.remove('cipher-active');
+document.querySelectorAll('.skill-group').forEach(el => skillObserver.observe(el));
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('section');
+window.addEventListener('scroll', () => {
+  let activeId = '';
+  const scrollPos = window.scrollY + 100;
+  sections.forEach(sec => {
+    const top = sec.offsetTop;
+    const height = sec.offsetHeight;
+    if (scrollPos >= top && scrollPos < top + height) {
+      activeId = sec.getAttribute('id');
     }
-    iter += 1 / 3;
-  }, 25);
-}
-
-document.querySelectorAll('h2.cipher').forEach(el => {
-  el.addEventListener('mouseenter', () => runCipher(el));
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === `#${activeId}`) {
+      link.classList.add('active');
+    }
+  });
 });
-
-// 9. Active Navigation Link highlighting
-const activeNavObs = new IntersectionObserver((entries) => {
+const cipherEls = document.querySelectorAll('.cipher');
+const glyphs = "0123456789ABCDEF$#@%&?*[]{}<>";
+const cipherObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      const id = entry.target.getAttribute('id');
-      document.querySelectorAll('.nav-links a').forEach(a => {
-        a.classList.toggle('active', a.getAttribute('href') === `#${id}`);
-      });
+      triggerCipherAnimation(entry.target);
     }
   });
-}, { rootMargin: '-20% 0px -60% 0px' });
-
-document.querySelectorAll('section').forEach(sec => activeNavObs.observe(sec));
-
-// 10. SYSTEM DIAGNOSTICS: Functional PID Simulator
-function simulatePID(Kp, Ki, Kd) {
-  const J = 1.0;   // System Inertia
-  const b = 0.6;   // Damping coefficient
-  const k = 1.2;   // Spring coefficient
-  const dt = 0.08; // Time step
-  
-  let x = 0;       // Position
-  let v = 0;       // Velocity
-  let e_int = 0;   // Integral error accumulation
-  let e_prev = 0;  // Previous error
-  
-  const setpoint = 1.0;
-  const points = [];
-  
-  for (let step = 0; step < 130; step++) {
-    const e = setpoint - x;
-    e_int += e * dt;
-    e_int = Math.max(-4, Math.min(4, e_int)); // Anti-windup
-    const e_der = (e - e_prev) / dt;
-    e_prev = e;
-    
-    let u = Kp * e + Ki * e_int + Kd * e_der;
-    u = Math.max(-10, Math.min(10, u)); // Drive saturation limits
-    
-    const a = (u - b * v - k * x) / J;
-    v += a * dt;
-    x += v * dt;
-    
-    points.push(x);
-  }
-  return points;
+}, { threshold: 0.5 });
+cipherEls.forEach(el => cipherObserver.observe(el));
+function triggerCipherAnimation(el) {
+  if (el.dataset.animating === 'true') return;
+  el.dataset.animating = 'true';
+  const originalText = el.dataset.text || el.textContent;
+  let currentIteration = 0;
+  el.classList.add('cipher-active');
+  const interval = setInterval(() => {
+    el.textContent = originalText
+      .split("")
+      .map((char, index) => {
+        if (char === " ") return " ";
+        if (index < currentIteration) return originalText[index];
+        return glyphs[Math.floor(Math.random() * glyphs.length)];
+      })
+      .join("");
+    if (currentIteration >= originalText.length) {
+      clearInterval(interval);
+      el.dataset.animating = 'false';
+      el.classList.remove('cipher-active');
+    }
+    currentIteration += 1 / 3;
+  }, 30);
 }
-
+let pidCanvas = document.getElementById('pid-canvas');
+let pidCtx = pidCanvas ? pidCanvas.getContext('2d') : null;
+let Kp = 0.80, Ki = 0.15, Kd = 0.05;
+let setpoint = 100;
+let processValue = 0;
+let integral = 0;
+let prevError = 0;
+let history = [];
+const historyMax = 120;
 function drawPIDPlot() {
-  const canvas = document.getElementById('pid-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  
-  const Kp = parseFloat(document.getElementById('slider-kp').value);
-  const Ki = parseFloat(document.getElementById('slider-ki').value);
-  const Kd = parseFloat(document.getElementById('slider-kd').value);
-  
-  document.getElementById('val-kp').textContent = Kp.toFixed(1);
+  if (!pidCanvas || !pidCtx) return;
+  const dpr = window.devicePixelRatio || 1;
+  const rect = pidCanvas.getBoundingClientRect();
+  pidCanvas.width = rect.width * dpr;
+  pidCanvas.height = rect.height * dpr;
+  pidCtx.scale(dpr, dpr);
+  const W = rect.width;
+  const H = rect.height;
+  pidCtx.fillStyle = '#000';
+  pidCtx.fillRect(0, 0, W, H);
+  pidCtx.strokeStyle = 'rgba(244,50,11,.15)';
+  pidCtx.lineWidth = 0.5;
+  for (let x = 0; x < W; x += 40) {
+    pidCtx.beginPath();
+    pidCtx.moveTo(x, 0);
+    pidCtx.lineTo(x, H);
+    pidCtx.stroke();
+  }
+  for (let y = 0; y < H; y += 30) {
+    pidCtx.beginPath();
+    pidCtx.moveTo(0, y);
+    pidCtx.lineTo(W, y);
+    pidCtx.stroke();
+  }
+  const midH = H - 35;
+  pidCtx.strokeStyle = '#4caf7d';
+  pidCtx.lineWidth = 1;
+  pidCtx.beginPath();
+  pidCtx.moveTo(0, midH - setpoint * 0.7);
+  pidCtx.lineTo(W, midH - setpoint * 0.7);
+  pidCtx.stroke();
+  const error = setpoint - processValue;
+  integral += error;
+  integral = Math.max(-50, Math.min(50, integral));
+  const derivative = error - prevError;
+  const output = (Kp * error) + (Ki * integral) + (Kd * derivative);
+  processValue += output * 0.12; 
+  prevError = error;
+  history.push(processValue);
+  if (history.length > historyMax) history.shift();
+  pidCtx.strokeStyle = '#f4320b';
+  pidCtx.lineWidth = 1.8;
+  pidCtx.beginPath();
+  for (let i = 0; i < history.length; i++) {
+    const x = (i / historyMax) * W;
+    const y = midH - history[i] * 0.7;
+    if (i === 0) pidCtx.moveTo(x, y);
+    else pidCtx.lineTo(x, y);
+  }
+  pidCtx.stroke();
+  if (Math.random() > 0.94) {
+    setpoint = 60 + Math.random() * 80;
+  }
+  requestAnimationFrame(drawPIDPlot);
+}
+function updatePIDParams() {
+  Kp = parseFloat(document.getElementById('param-kp').value);
+  Ki = parseFloat(document.getElementById('param-ki').value);
+  Kd = parseFloat(document.getElementById('param-kd').value);
+  document.getElementById('val-kp').textContent = Kp.toFixed(2);
   document.getElementById('val-ki').textContent = Ki.toFixed(2);
   document.getElementById('val-kd').textContent = Kd.toFixed(2);
-  
-  const points = simulatePID(Kp, Ki, Kd);
-  
-  const w = canvas.width;
-  const h = canvas.height;
-  ctx.clearRect(0, 0, w, h);
-  
-  // Draw diagnostic background grid lines
-  ctx.strokeStyle = 'rgba(244, 50, 11, 0.08)';
-  ctx.lineWidth = 1;
-  for (let r = 1; r < 5; r++) {
-    const y = (h / 5) * r;
-    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-  }
-  for (let c = 1; c < 10; c++) {
-    const x = (w / 10) * c;
-    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
-  }
-  
-  // Draw setpoint threshold (dashed)
-  ctx.strokeStyle = 'rgba(0, 255, 102, 0.4)';
-  ctx.setLineDash([5, 5]);
-  ctx.lineWidth = 1;
-  const setpointY = h - (1.0 * (h * 0.6)); // Setpoint at 60% height
-  ctx.beginPath(); ctx.moveTo(0, setpointY); ctx.lineTo(w, setpointY); ctx.stroke();
-  ctx.setLineDash([]);
-  
-  // Plot PID Step response
-  ctx.strokeStyle = 'var(--orange)';
-  ctx.lineWidth = 2.2;
-  ctx.beginPath();
-  const stepX = w / (points.length - 1);
-  points.forEach((p, idx) => {
-    const px = idx * stepX;
-    const py = h - (p * (h * 0.6));
-    if (idx === 0) ctx.moveTo(px, py);
-    else ctx.lineTo(px, py);
-  });
-  ctx.stroke();
-  
-  ctx.fillStyle = 'var(--term-green)';
-  ctx.font = '8px monospace';
-  ctx.fillText('TARGET SETPOINT (1.0)', 8, setpointY - 4);
+  document.getElementById('pid-stats').textContent = `Kp: ${Kp.toFixed(2)} | Ki: ${Ki.toFixed(2)} | Kd: ${Kd.toFixed(2)}`;
 }
-
-// Bind sliders to immediate redraw
-['slider-kp', 'slider-ki', 'slider-kd'].forEach(id => {
+['param-kp', 'param-ki', 'param-kd'].forEach(id => {
   const el = document.getElementById(id);
-  if (el) el.addEventListener('input', drawPIDPlot);
+  if (el) el.addEventListener('input', updatePIDParams);
 });
-
-// 11. SYSTEM DIAGNOSTICS: Simulated CAN Bus Telemetry Data Stream
 function initTelemetryData() {
-  const rpmEl = document.getElementById('hud-val-rpm');
-  const tempEl = document.getElementById('hud-val-temp');
-  const loadEl = document.getElementById('hud-val-bus');
-  const packEl = document.getElementById('hud-val-pack');
-  const logBox = document.getElementById('telemetry-log');
-  
-  let currentRpm = 4500;
-  let currentTemp = 38.4;
-  let currentLoad = 65.4;
-  let currentPack = 48.12;
-  
-  const canMsgs = [
-    '0x1A0 Tx d 8 02 4A 1F C8 00 00 00',
-    '0x2B4 Tx d 4 FF 00 CE 2B',
-    '0x08F Tx d 8 45 6B 00 00 E3 12 00',
-    '0x302 Tx d 6 12 AD FC 88 0A',
-    '0x15C Tx d 8 00 00 AA BC F0 03 10'
-  ];
-  
+  const logBox = document.getElementById('diag-log');
+  const tempVal = document.getElementById('telemetry-temp');
+  const voltsVal = document.getElementById('telemetry-volts');
+  const rpmVal = document.getElementById('hud-rpm');
+  const dutyVal = document.getElementById('hud-duty');
+  if (!logBox) return;
+  const frameIDs = ["0x180", "0x280", "0x380", "0x0A0", "0x580"];
+  let mockTemp = 42.4;
+  let mockVolts = 24.08;
+  let mockRPM = 3200;
+  let mockDuty = 0.74;
   setInterval(() => {
-    // Oscillations
-    currentRpm += (Math.random() - 0.5) * 150;
-    currentRpm = Math.max(3000, Math.min(6200, currentRpm));
-    
-    currentTemp += (Math.random() - 0.48) * 0.5;
-    currentTemp = Math.max(32.0, Math.min(52.0, currentTemp));
-    
-    currentLoad += (Math.random() - 0.5) * 2.5;
-    currentLoad = Math.max(45.0, Math.min(85.0, currentLoad));
-    
-    currentPack += (Math.random() - 0.5) * 0.08;
-    currentPack = Math.max(45.0, Math.min(50.4, currentPack));
-    
-    if (rpmEl) rpmEl.textContent = Math.round(currentRpm);
-    if (tempEl) tempEl.textContent = `${currentTemp.toFixed(1)}°C`;
-    if (loadEl) loadEl.textContent = `${currentLoad.toFixed(1)}%`;
-    if (packEl) packEl.textContent = `${currentPack.toFixed(2)}V`;
-    
-    // Add lines to telemetry log console
-    if (logBox) {
-      const msg = canMsgs[Math.floor(Math.random() * canMsgs.length)];
-      const ts = (Date.now() % 100000 / 1000).toFixed(3);
-      const line = document.createElement('div');
-      line.textContent = `[${ts}] ${msg}`;
-      logBox.appendChild(line);
-      if (logBox.children.length > 20) {
-        logBox.removeChild(logBox.firstChild);
-      }
-      logBox.scrollTop = logBox.scrollHeight;
+    mockTemp += (Math.random() - 0.5) * 0.4;
+    mockTemp = Math.max(35, Math.min(85, mockTemp));
+    mockVolts += (Math.random() - 0.5) * 0.08;
+    mockVolts = Math.max(22.5, Math.min(26.2, mockVolts));
+    mockRPM = Math.floor(3200 + (Math.sin(Date.now() * 0.001) * 600) + (Math.random() - 0.5) * 100);
+    mockDuty = (mockRPM / 4500).toFixed(2);
+    if (tempVal) tempVal.textContent = `${mockTemp.toFixed(1)}°C`;
+    if (voltsVal) voltsVal.textContent = `${mockVolts.toFixed(2)}V`;
+    if (rpmVal) rpmVal.textContent = mockRPM;
+    if (dutyVal) dutyVal.textContent = mockDuty;
+    const canID = frameIDs[Math.floor(Math.random() * frameIDs.length)];
+    const canBytes = Array.from({length: 8}, () => Math.floor(Math.random() * 256).toString(16).toUpperCase().padStart(2, '0')).join(' ');
+    const logLine = document.createElement('div');
+    logLine.textContent = `[CAN] ID: ${canID} | DATA: ${canBytes}`;
+    logBox.appendChild(logLine);
+    if (logBox.childNodes.length > 5) {
+      logBox.removeChild(logBox.firstChild);
     }
-  }, 900);
+    logBox.scrollTop = logBox.scrollHeight;
+  }, 350);
 }
-
-// 12. Easter Egg Decryption Terminal
-function revealEggDirect() {
-  const promptEl = document.getElementById('egg-prompt');
-  if (promptEl) promptEl.style.display = 'none';
-  
-  const ff = document.getElementById('fun-facts');
-  if (ff) ff.style.display = 'flex';
-  
-  const sectionMeta = document.querySelector('#easter-egg .hud-addr');
-  const decryptStatus = document.getElementById('decrypt-status');
-  if (decryptStatus) {
-    decryptStatus.textContent = 'STATUS: DECRYPTED';
-    decryptStatus.style.color = 'var(--term-green)';
-  }
-  
-  // Trigger Aventador SVGs to start driving
-  const carSvg = document.getElementById('car-svg');
-  if (carSvg) carSvg.classList.add('run');
-  
-  ['ff1', 'ff2'].forEach((id, i) => {
-    setTimeout(() => {
-      const el = document.getElementById(id);
-      if (el) el.classList.add('pop');
-    }, i * 240 + 60);
-  });
-}
-
-function checkDecryptKey() {
-  const input = document.getElementById('decrypt-input');
-  const log = document.getElementById('decrypt-console-log');
-  if (!input || !log) return;
-  
-  const key = input.value.trim().toLowerCase();
-  input.value = '';
-  
-  const promptLine = document.createElement('div');
-  promptLine.textContent = `> Analyzing decrypt key: "${key}"`;
-  log.appendChild(promptLine);
-  
+function attemptDecryption() {
+  const inputEl = document.getElementById('decrypt-key');
+  const log = document.getElementById('decrypt-log');
+  const status = document.getElementById('decrypt-status');
+  const car = document.getElementById('car-svg');
+  const factsWrap = document.getElementById('egg-facts');
+  if (!inputEl || !log) return;
+  const key = inputEl.value.trim().toLowerCase();
+  log.textContent = ``;
+  const line1 = document.createElement('div');
+  line1.textContent = `> Initiating authentication check for token: "${key}"...`;
+  log.appendChild(line1);
   setTimeout(() => {
+    const line2 = document.createElement('div');
+    line2.textContent = `> Searching Waterloo Tron cryptographic databases...`;
+    log.appendChild(line2);
+  }, 200);
+  setTimeout(() => {
+    const validKeys = ['origin', 'car', 'computer'];
     const respLine = document.createElement('div');
-    if (key === 'origin' || key === 'computer' || key === 'car' || key === 'lamborghini' || key === 'aventador') {
+    if (validKeys.includes(key)) {
       respLine.style.color = 'var(--term-green)';
-      respLine.textContent = `> DECRYPTION KEY ACCEPTED: Accessing restricted nodes...`;
+      respLine.textContent = `> ACCESS GRANTED. Decryption process complete.`;
       log.appendChild(respLine);
-      setTimeout(() => {
-        revealEggDirect();
-      }, 600);
+      if (status) {
+        status.textContent = 'STATUS: DECRYPTED';
+        status.style.color = 'var(--term-green)';
+      }
+      if (factsWrap) factsWrap.style.display = 'flex';
+      const factCard = document.getElementById(`fact-${key}`);
+      if (factCard) {
+        factCard.classList.add('pop');
+        factCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      if (key === 'car' && car) {
+        car.classList.add('run');
+      }
     } else {
       respLine.style.color = 'var(--orange)';
       respLine.textContent = `> ERROR: Invalid verification key. Check database record.`;
@@ -2002,13 +1657,10 @@ function checkDecryptKey() {
     log.scrollTop = log.scrollHeight;
   }, 400);
 }
-
-// 13. System Uptime Timer (Footer)
 function initUptimeTimer() {
   const el = document.getElementById('uptime-val');
   if (!el) return;
   const start = Date.now();
-  
   setInterval(() => {
     const elapsedSecs = Math.floor((Date.now() - start) / 1000);
     const hours = Math.floor(elapsedSecs / 3600);
@@ -2017,34 +1669,26 @@ function initUptimeTimer() {
     el.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }, 1000);
 }
-
-// 14. Initialize Main page components
 function initMainSystem() {
   runTypewriter();
   drawPIDPlot();
   initTelemetryData();
   initUptimeTimer();
 }
-
-// 15. BOOT SEQUENCE DIAGNOSTIC LOOP (PREMIUM FADE OUT)
 function runBootSequence() {
   const bootOverlay = document.getElementById('boot-overlay');
   const bootConsole = document.getElementById('boot-console');
   const bootProgress = document.getElementById('boot-progress');
   const bootPercentText = document.getElementById('boot-percent-text');
-  
   if (!bootOverlay || !bootConsole) {
     initMainSystem();
     return;
   }
-  
-  // If already booted this session, skip boot
   if (sessionStorage.getItem('system_booted') === '1') {
     bootOverlay.style.display = 'none';
     initMainSystem();
     return;
   }
-  
   const bootLines = [
     "[ 0.001 ] Initializing WATERLOO_TRON kernel bootstrap...",
     "[ 0.045 ] MCU core configuration: HSE clock @ 168MHz",
@@ -2061,7 +1705,6 @@ function runBootSequence() {
     "[ 1.250 ] Validating cryptographic certificates...",
     "[ 1.340 ] All subsystems initialized. Boot loop exit code: 0x00"
   ];
-  
   let lineIdx = 0;
   function printNextConsoleLine() {
     if (lineIdx < bootLines.length) {
@@ -2070,29 +1713,20 @@ function runBootSequence() {
       line.innerHTML = bootLines[lineIdx].replace("OK", "<span class='ok'>OK</span>");
       bootConsole.appendChild(line);
       bootConsole.scrollTop = bootConsole.scrollHeight;
-      
-      // Trigger CSS reflow and class add
       line.offsetHeight;
       line.classList.add('show');
-      
       lineIdx++;
       setTimeout(printNextConsoleLine, 60 + Math.random() * 80);
     }
   }
-  
   printNextConsoleLine();
-  
-  // Progress Ring loading
   let progress = 0;
-  const totalLength = 440; // 2 * pi * r (r=70)
-  
+  const totalLength = 440;
   const progressInterval = setInterval(() => {
     progress += Math.floor(Math.random() * 3) + 1;
     if (progress >= 100) {
       progress = 100;
       clearInterval(progressInterval);
-      
-      // Premium Fade Out reveal transition
       setTimeout(() => {
         bootOverlay.classList.add('faded-out');
         sessionStorage.setItem('system_booted', '1');
@@ -2102,13 +1736,10 @@ function runBootSequence() {
         }, 800);
       }, 500);
     }
-    
     const offset = totalLength - (progress / 100) * totalLength;
     if (bootProgress) bootProgress.style.strokeDashoffset = offset;
     if (bootPercentText) bootPercentText.textContent = `${progress}%`;
   }, 30);
-  
-  // Draw calibration graph wave simulation during boot
   const canvas = document.getElementById('boot-calibration-canvas');
   if (canvas) {
     const ctx = canvas.getContext('2d');
@@ -2128,10 +1759,7 @@ function runBootSequence() {
     drawCalGraph();
   }
 }
-
-// Fire Boot Sequence
 runBootSequence();
-
 </script>
 </body>
 </html>
